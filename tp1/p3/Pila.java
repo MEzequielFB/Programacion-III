@@ -9,10 +9,30 @@ public class Pila {
         this.tamanio = 0;
     }
 
+    public void reverse() {
+        Nodo ultimo_nodo_original = this.ultimo;
+        int indice = this.tamanio - 2 ; //Indice anteultimo nodo
+        while (indice >= 0) {
+            Nodo nodo_actual = this.getNodo(indice);
+            this.ultimo.setSiguiente(nodo_actual);
+            this.setUltimo(nodo_actual);
+            indice--;
+        }
+        this.ultimo.setSiguiente(null);
+        this.setPrimero(ultimo_nodo_original);
+    }
+
+    public Object top() {
+        return this.ultimo.getInfo();
+    }
+
     public void push(Object info) {
         Nodo nodo_nuevo = new Nodo(info, null);
         if (this.estaVacio()) {
             this.setPrimero(nodo_nuevo);
+        }
+        if (this.ultimo != null) {
+            this.ultimo.setSiguiente(nodo_nuevo);
         }
         this.setUltimo(nodo_nuevo);
         this.setTamanio(this.tamanio + 1);
@@ -21,20 +41,36 @@ public class Pila {
     public Object pop() {
         if (!this.estaVacio()) {
             Object ultimo_nodo_info = this.ultimo.getInfo();
-            int indice = 0;
+            if (this.tamanio == 1) {
+                this.setPrimero(null);
+            } else {
+                int indice_anteultimo = this.tamanio - 2;
+                /* if (indice_anteultimo >= 0) { */
+                Nodo anteultimo_nodo = this.getNodo(indice_anteultimo);
+                this.setUltimo(anteultimo_nodo);
+                anteultimo_nodo.setSiguiente(null);
+                /* } */
+            }
+            this.setTamanio(this.tamanio - 1);
+            return ultimo_nodo_info;
+        }
+        return null;
+        /* if (!this.estaVacio()) {
+            Object ultimo_nodo_info = this.ultimo.getInfo();
+            int indice = 0; */
             /* Nodo nuevo_nodo_ultimo = null; */
-            while (indice < this.tamanio  && indice >= 0 /* && nuevo_nodo_ultimo == null */) {
+            /* while (indice < this.tamanio  && indice >= 0 */ /* && nuevo_nodo_ultimo == null *//* ) {
                 Nodo nodo_actual = this.getNodo(indice);
                 if (nodo_actual.getSiguiente().equals(this.ultimo)) {
                     nodo_actual.setSiguiente(null);
                     this.setUltimo(nodo_actual);
                     this.setTamanio(this.tamanio - 1);
-                    return ultimo_nodo_info;
+                    return ultimo_nodo_info; */
                     /* nuevo_nodo_ultimo = nodo_actual; */
-                }
+                /* }
             }
         }
-        return null;
+        return null; */
     }
 
     public void insertarFrente(Object info) {
@@ -74,7 +110,7 @@ public class Pila {
         return null;
     }
 
-    public Nodo getNodo(int indice) {
+    private Nodo getNodo(int indice) {
         Nodo nodo_actual = this.primero;
         int posicion_actual = 0;
         while (indice < this.tamanio && indice >= 0) {
@@ -87,17 +123,17 @@ public class Pila {
         return null;
     }
 
-    public Nodo getPrimero() {
-        return this.primero;
+    public Object getPrimero() {
+        return this.primero.getInfo();
     }
 
     public void setPrimero(Nodo primero) {
         this.primero = primero;
     }
 
-    public Nodo getUltimo() {
-        return this.ultimo;
-    }
+    /* public Object getUltimo() {
+        return this.ultimo.getInfo();
+    } */
 
     public void setUltimo(Nodo ultimo) {
         this.ultimo = ultimo;
