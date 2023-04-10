@@ -30,7 +30,41 @@ public class ListaDoblementeVinculada implements Iterable<Object> {
 
     public void reverse() {
         Nodo ultimo_nodo_original = this.ultimo;
-        int indice = this.tamanio - 2 ; //Indice anteultimo nodo
+        Nodo siguiente_del_ultimo = null;
+        Nodo nodo_actual = null;
+        Nodo proximo_nodo_actual = this.ultimo.getAnterior();
+        int i = 0;
+
+        while (i < this.tamanio) {
+            nodo_actual = proximo_nodo_actual;
+            proximo_nodo_actual = nodo_actual.getAnterior();
+
+            this.ultimo.setSiguiente(nodo_actual);
+            nodo_actual = nodo_actual.getAnterior();
+            this.ultimo.setAnterior(nodo_actual);
+            if (nodo_actual != null) {
+                nodo_actual.setSiguiente(this.ultimo);
+            }
+    
+            siguiente_del_ultimo = this.ultimo.getSiguiente();
+            siguiente_del_ultimo.setAnterior(this.ultimo);
+            siguiente_del_ultimo.setSiguiente(null);
+            this.setUltimo(siguiente_del_ultimo);
+
+            /* nodo_actual = proximo_nodo_actual; */
+
+            i++;
+        }
+        ultimo_nodo_original.setAnterior(null);
+        this.setPrimero(ultimo_nodo_original);
+
+        /* Nodo nodo_actual = this.ultimo.getAnterior();
+        this.ultimo.setSiguiente(nodo_actual);
+        nodo_actual.setAnterior(this.ultimo);
+        nodo_actual = nodo_actual.getAnterior();
+        this.ultimo.getSiguiente().setAnterior(this.ultimo); */
+        /* Nodo ultimo_nodo_original = this.ultimo;
+        int indice = this.tamanio - 2 ;
         while (indice >= 0) {
             Nodo nodo_actual = this.getNodo(indice);
             this.ultimo.setSiguiente(nodo_actual);
@@ -38,7 +72,7 @@ public class ListaDoblementeVinculada implements Iterable<Object> {
             indice--;
         }
         this.ultimo.setSiguiente(null);
-        this.setPrimero(ultimo_nodo_original);
+        this.setPrimero(ultimo_nodo_original); */
     }
 
     public Object top() {
@@ -87,6 +121,7 @@ public class ListaDoblementeVinculada implements Iterable<Object> {
             Object info = this.primero.getInfo();
             this.setPrimero(primero.getSiguiente());
             this.primero.setAnterior(null);
+            this.setTamanio(tamanio - 1);
             return info;
         }
         return null;
@@ -114,7 +149,7 @@ public class ListaDoblementeVinculada implements Iterable<Object> {
 
     private Nodo getNodo(int indice) {
 
-        int minima_posicion = -1;
+        /* int minima_posicion = -1;
         int maxima_posicion = -1;
         int modificador = 1;
         int posicion_actual = -1;
@@ -146,8 +181,8 @@ public class ListaDoblementeVinculada implements Iterable<Object> {
                 }
                 posicion_actual = posicion_actual + modificador;
             }
-        }
-        /* Nodo nodo_actual = this.primero;
+        } */
+        Nodo nodo_actual = this.primero;
         int posicion_actual = 0;
         while (indice < this.tamanio && indice >= 0) {
             if (posicion_actual == indice) {
@@ -155,7 +190,7 @@ public class ListaDoblementeVinculada implements Iterable<Object> {
             }
             nodo_actual = nodo_actual.getSiguiente();
             posicion_actual++;
-        } */
+        }
         return null;
     }
 
