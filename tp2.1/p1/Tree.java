@@ -1,9 +1,54 @@
+import java.util.LinkedList;
+
 public class Tree {
     private Nodo root;
 	
 	public Tree() {
 		this.root = null;
 	}
+
+    public LinkedList<Nodo> getLongestBranch() {
+        return this.getLongestBranch(this.root); //Llama al metodo empezando desde el root
+    }
+
+    private LinkedList<Nodo> getLongestBranch(Nodo actual) {
+        LinkedList<Nodo> longest_branch = new LinkedList<>(); //Crea una lista vinculada
+        if (actual != null) { //Si el actual no es null...
+            longest_branch.add(actual); //Se agrega el actual a la lista
+
+            //Se obtiene el alto de los subarboles del nodo actual
+            int height_left = this.getHeight(this.root.getLeft());
+            int height_right = this.getHeight(this.root.getRight());
+
+            //Se compara el valor del alto de los subarboles. Si ambos valores son cero no se hace nada
+            //Si el izquierdo es mayor o son iguales, se obtiene la rama mas larga del subarbol izquierdo
+            //De lo contrario se obtiene la rama mas larga del subarbol derecho
+            //Despues de obtener la rama se agregan sus valores a la rama actual
+            if (height_left != 0 && height_right != 0) {
+                if (height_left > height_right || height_left == height_right) {
+                    longest_branch.addAll(this.getLongestBranch(actual.getLeft()));
+                } else {
+                    longest_branch.addAll(this.getLongestBranch(actual.getRight()));
+                }
+            }
+        }
+        return longest_branch; //Retorna la rama actual
+    }
+
+    public int getHeight() {
+        return this.getHeight(this.root);
+    }
+
+    private int getHeight(Nodo actual) {
+        if (actual != null) {
+            int sum = 0;
+            int height_left = this.getHeight(actual.getLeft());
+            int height_right = this.getHeight(actual.getRight());
+            sum = Math.max(height_left, height_right);
+            return sum + 1;
+        }
+        return 0;
+    }
 
     private Nodo getNMD(Nodo actual) {
         if (actual != null && actual.getRight() != null) { //Condicion de corte
@@ -159,7 +204,11 @@ public class Tree {
 		}
 	}
 
-    public boolean hasElem(Nodo actual, Integer value) {
+    public boolean hasElem(Integer value) {
+        return this.hasElem(this.root, value);
+    }
+
+    private boolean hasElem(Nodo actual, Integer value) {
         if (actual != null) {
             Integer actual_value = actual.getValue();
             if (actual_value == value) {
@@ -175,7 +224,7 @@ public class Tree {
         return false;
     }
 
-    public Integer getMaxElem(Nodo actual, Nodo actual_father) {
+    /* public Integer getMaxElem(Nodo actual, Nodo actual_father) {
         if (actual != null) {
             this.getMaxElem(actual.getRight(), actual);
         }
@@ -183,9 +232,27 @@ public class Tree {
             return null;
         }
         return actual_father.getValue();
+    } */
+
+    public Integer getMaxElem() {
+        return this.getMaxElem(this.root);
     }
 
-    public void printOrder(Nodo actual) {
+    private Integer getMaxElem(Nodo actual) {
+        if (actual != null && actual.getRight() != null) {
+            return this.getMaxElem(actual.getRight());
+        }
+        if (actual != null) {
+            return actual.getValue();
+        }
+        return null;
+    }
+
+    public void printOrder() {
+        this.printOrder(this.root);
+    }
+
+    private void printOrder(Nodo actual) {
         if (actual != null) {
             this.printOrder(actual.getLeft());
             System.out.println(actual);
@@ -193,7 +260,11 @@ public class Tree {
         }
     }
 
-    public void printPostOrder(Nodo actual) {
+    public void printPostOrder() {
+        this.printPostOrder(this.root);
+    }
+
+    private void printPostOrder(Nodo actual) {
         if (actual != null) {
             this.printPostOrder(actual.getLeft());
             this.printPostOrder(actual.getRight());
@@ -201,7 +272,11 @@ public class Tree {
         }
     }
 
-    public void printPreOrder(Nodo actual) {
+    public void printPreOrder() {
+        this.printPreOrder(this.root);
+    }
+
+    private void printPreOrder(Nodo actual) {
         if (actual != null) {
             System.out.println(actual);
             this.printPreOrder(actual.getLeft());
