@@ -7,6 +7,27 @@ public class Tree {
 		this.root = null;
 	}
 
+    public LinkedList<Nodo> getElemAtLevel(int level) {
+        return this.getElemAtLevel(level, 0, this.root);
+    }
+
+    private LinkedList<Nodo> getElemAtLevel(int level, int actual_level, Nodo actual) {
+        LinkedList<Nodo> elements = new LinkedList<>();
+        //Condicion de corte -> Que el nodo actual no sea null y que el nivel indicado este entre 0 y la altura del arbol inclusive
+        if (actual != null && (level >= 0 && level <= this.getHeight())) {
+            //Si el nodo actual esta en el nivel indicado se agrega a la lista
+            if (level == actual_level) {
+                elements.add(actual);
+            } else {
+                //Si no se esta en el nivel indicado se llama recursivamente a los nodos adyacentes y al nivel siguiente
+                //Los retornos del metodo se agregan a la lista
+                elements.addAll(this.getElemAtLevel(level, actual_level+1, actual.getLeft()));
+                elements.addAll(this.getElemAtLevel(level, actual_level+1, actual.getRight()));
+            }
+        }
+        return elements; //Devuelve la lista
+    }
+
     public LinkedList<Nodo> getBorder() {
         return this.getBorder(this.root);
     }
@@ -14,14 +35,16 @@ public class Tree {
     private LinkedList<Nodo> getBorder(Nodo actual) {
         LinkedList<Nodo> external_nodes = new LinkedList<>();
         if (actual != null) {
+            //Si el nodo actual es un nodo externo lo agrega a la lista
             if (actual.getLeft() == null && actual.getRight() == null) {
                 external_nodes.add(actual);
             } else {
+                //Si no es un nodo externo llama recursivamente a los nodos adyacentes y agrega lo retornado a la lista
                 external_nodes.addAll(this.getBorder(actual.getLeft()));
                 external_nodes.addAll(this.getBorder(actual.getRight()));
             }
         }
-        return external_nodes;
+        return external_nodes; //Devuelve la lista
     }
 
     public LinkedList<Nodo> getLongestBranch() {
