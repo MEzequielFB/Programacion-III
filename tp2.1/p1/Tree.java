@@ -7,7 +7,7 @@ public class Tree {
 		this.root = null;
 	}
 
-    public LinkedList<Nodo> getElemAtLevel(int level) {
+    public LinkedList<Nodo> getElemAtLevel(int level) { //O(n)
         return this.getElemAtLevel(level, 0, this.root);
     }
 
@@ -28,7 +28,7 @@ public class Tree {
         return elements; //Devuelve la lista
     }
 
-    public LinkedList<Nodo> getBorder() {
+    public LinkedList<Nodo> getBorder() { //O(n)
         return this.getBorder(this.root);
     }
 
@@ -47,7 +47,7 @@ public class Tree {
         return external_nodes; //Devuelve la lista
     }
 
-    public LinkedList<Nodo> getLongestBranch() {
+    public LinkedList<Nodo> getLongestBranch() { //O(n)
         return this.getLongestBranch(this.root); //Llama al metodo empezando desde el root
     }
 
@@ -75,7 +75,7 @@ public class Tree {
         return longest_branch; //Retorna la rama actual
     }
 
-    public int getHeight() {
+    public int getHeight() { //O(n)
         return this.getHeight(this.root);
     }
 
@@ -90,7 +90,7 @@ public class Tree {
         return 0;
     }
 
-    private Nodo getNMD(Nodo actual) {
+    private Nodo getNMD(Nodo actual) { //O(n)
         if (actual != null && actual.getRight() != null) { //Condicion de corte
             this.getNMD(actual.getRight());
         }
@@ -98,7 +98,7 @@ public class Tree {
     }
 
     //Para no romper encapsulamiento hago este metodo al que se pasa solo el valor y despues llama a otro delete que inicia desde el root del arbol
-    public boolean delete(Integer value) {
+    public boolean delete(Integer value) { //O(n)
         return this.delete(this.root, value, null);
     }
 
@@ -218,7 +218,7 @@ public class Tree {
         return null;
     } */
 
-    public void insert(Integer value) {
+    public void insert(Integer value) { //O(n)
 		if (this.root == null) {
             this.root = new Nodo(value);
         } else {
@@ -244,7 +244,7 @@ public class Tree {
 		}
 	}
 
-    public boolean hasElem(Integer value) {
+    public boolean hasElem(Integer value) { //O(n)
         return this.hasElem(this.root, value);
     }
 
@@ -274,7 +274,7 @@ public class Tree {
         return actual_father.getValue();
     } */
 
-    public Integer getMaxElem() {
+    public Integer getMaxElem() { //O(n)
         return this.getMaxElem(this.root);
     }
 
@@ -288,7 +288,7 @@ public class Tree {
         return null;
     }
 
-    public void printOrder() {
+    public void printOrder() { //O(n)
         this.printOrder(this.root);
     }
 
@@ -300,7 +300,7 @@ public class Tree {
         }
     }
 
-    public void printPostOrder() {
+    public void printPostOrder() { //O(n)
         this.printPostOrder(this.root);
     }
 
@@ -312,7 +312,7 @@ public class Tree {
         }
     }
 
-    public void printPreOrder() {
+    public void printPreOrder() { //O(n)
         this.printPreOrder(this.root);
     }
 
@@ -324,14 +324,14 @@ public class Tree {
         }
     }
 
-    public boolean isEmpty() {
+    public boolean isEmpty() { //O(1)
         if (this.root != null) {
             return false;
         }
         return true;
     }
 
-    public Integer getRoot() {
+    public Integer getRoot() { //O(1)
         if (this.root != null) {
             return this.root.getValue();
         }
