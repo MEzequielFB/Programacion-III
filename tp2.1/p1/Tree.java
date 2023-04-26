@@ -7,6 +7,23 @@ public class Tree {
 		this.root = null;
 	}
 
+    public LinkedList<Nodo> getBorder() {
+        return this.getBorder(this.root);
+    }
+
+    private LinkedList<Nodo> getBorder(Nodo actual) {
+        LinkedList<Nodo> external_nodes = new LinkedList<>();
+        if (actual != null) {
+            if (actual.getLeft() == null && actual.getRight() == null) {
+                external_nodes.add(actual);
+            } else {
+                external_nodes.addAll(this.getBorder(actual.getLeft()));
+                external_nodes.addAll(this.getBorder(actual.getRight()));
+            }
+        }
+        return external_nodes;
+    }
+
     public LinkedList<Nodo> getLongestBranch() {
         return this.getLongestBranch(this.root); //Llama al metodo empezando desde el root
     }
