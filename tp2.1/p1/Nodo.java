@@ -38,6 +38,6 @@ public class Nodo {
 
     @Override
     public String toString() {
-        return this.value + " ";
+        return this.value + "";
     }
 }

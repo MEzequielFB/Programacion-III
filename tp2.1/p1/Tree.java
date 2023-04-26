@@ -116,9 +116,9 @@ public class Tree {
                 return true; //Retorna true porque se borra un nodo
             } else { //Si la clave del nodo actual no es igual al valor ingresado...
                 if (actual.getValue() < value) { //Si la clave del nodo actual es mas chico...
-                    this.delete(actual.getRight(), value, actual);
+                    return this.delete(actual.getRight(), value, actual);
                 } else { //Si la clave del nodo actual es mas grande...
-                    this.delete(actual.getLeft(), value, actual);
+                    return this.delete(actual.getLeft(), value, actual);
                 }
             }
         }
@@ -255,10 +255,10 @@ public class Tree {
                 return true;
             }
             if (actual_value < value) {
-                this.hasElem(actual.getRight(), value);
+                return this.hasElem(actual.getRight(), value);
             }
             if (actual_value > value) {
-                this.hasElem(actual.getLeft(), value);
+                return this.hasElem(actual.getLeft(), value);
             }
         }
         return false;
