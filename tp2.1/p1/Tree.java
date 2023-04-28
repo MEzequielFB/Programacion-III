@@ -7,17 +7,17 @@ public class Tree {
 		this.root = null;
 	}
 
-    public LinkedList<Nodo> getElemAtLevel(int level) { //O(n)
+    public LinkedList<Integer> getElemAtLevel(int level) { //O(n)
         return this.getElemAtLevel(level, 0, this.root);
     }
 
-    private LinkedList<Nodo> getElemAtLevel(int level, int actual_level, Nodo actual) {
-        LinkedList<Nodo> elements = new LinkedList<>();
+    private LinkedList<Integer> getElemAtLevel(int level, int actual_level, Nodo actual) {
+        LinkedList<Integer> elements = new LinkedList<>();
         //Condicion de corte -> Que el nodo actual no sea null y que el nivel indicado este entre 0 y la altura del arbol inclusive
         if (actual != null && (level >= 0 && level <= this.getHeight())) {
             //Si el nodo actual esta en el nivel indicado se agrega a la lista
             if (level == actual_level) {
-                elements.add(actual);
+                elements.add(actual.getValue());
             } else {
                 //Si no se esta en el nivel indicado se llama recursivamente a los nodos adyacentes y al nivel siguiente
                 //Los retornos del metodo se agregan a la lista
@@ -28,16 +28,16 @@ public class Tree {
         return elements; //Devuelve la lista
     }
 
-    public LinkedList<Nodo> getBorder() { //O(n)
+    public LinkedList<Integer> getBorder() { //O(n)
         return this.getBorder(this.root);
     }
 
-    private LinkedList<Nodo> getBorder(Nodo actual) {
-        LinkedList<Nodo> external_nodes = new LinkedList<>();
+    private LinkedList<Integer> getBorder(Nodo actual) {
+        LinkedList<Integer> external_nodes = new LinkedList<>();
         if (actual != null) {
             //Si el nodo actual es un nodo externo lo agrega a la lista
-            if (actual.getLeft() == null && actual.getRight() == null) {
-                external_nodes.add(actual);
+            if (actual.isExternalNode()) {
+                external_nodes.add(actual.getValue());
             } else {
                 //Si no es un nodo externo llama recursivamente a los nodos adyacentes y agrega lo retornado a la lista
                 external_nodes.addAll(this.getBorder(actual.getLeft()));
@@ -47,36 +47,40 @@ public class Tree {
         return external_nodes; //Devuelve la lista
     }
 
-    public LinkedList<Nodo> getLongestBranch() { //O(n)
+    public LinkedList<Integer> getLongestBranch() { //O(n)
         return this.getLongestBranch(this.root); //Llama al metodo empezando desde el root
     }
 
-    private LinkedList<Nodo> getLongestBranch(Nodo actual) {
-        LinkedList<Nodo> longest_branch = new LinkedList<>(); //Crea una lista vinculada
+    private LinkedList<Integer> getLongestBranch(Nodo actual) {
+        LinkedList<Integer> longest_branch = new LinkedList<>(); //Crea una lista vinculada
         if (actual != null) { //Si el actual no es null...
-            longest_branch.add(actual); //Se agrega el actual a la lista
+            longest_branch.add(actual.getValue()); //Se agrega el actual a la lista
 
             //Se obtiene el alto de los subarboles del nodo actual
-            int height_left = this.getHeight(this.root.getLeft());
-            int height_right = this.getHeight(this.root.getRight());
+            int height_left = this.getHeight(actual.getLeft());
+            int height_right = this.getHeight(actual.getRight());
 
             //Se compara el valor del alto de los subarboles. Si ambos valores son cero no se hace nada
             //Si el izquierdo es mayor o son iguales, se obtiene la rama mas larga del subarbol izquierdo
             //De lo contrario se obtiene la rama mas larga del subarbol derecho
             //Despues de obtener la rama se agregan sus valores a la rama actual
-            if (height_left != 0 && height_right != 0) {
-                if (height_left > height_right || height_left == height_right) {
-                    longest_branch.addAll(this.getLongestBranch(actual.getLeft()));
-                } else {
-                    longest_branch.addAll(this.getLongestBranch(actual.getRight()));
-                }
+            if (height_left == 0 && height_right == 0) {
+                return longest_branch;
+            }
+            if (height_left > height_right || height_left == height_right) {
+                longest_branch.addAll(this.getLongestBranch(actual.getLeft()));
+            } else {
+                longest_branch.addAll(this.getLongestBranch(actual.getRight()));
             }
         }
         return longest_branch; //Retorna la rama actual
     }
 
     public int getHeight() { //O(n)
-        return this.getHeight(this.root);
+        int left_subtree_height = this.getHeight(this.root.getLeft());
+        int right_subtree_height = this.getHeight(this.root.getRight());
+        return Math.max(left_subtree_height, right_subtree_height);
+        /* return this.getHeight(this.root) - 1; */
     }
 
     private int getHeight(Nodo actual) {
