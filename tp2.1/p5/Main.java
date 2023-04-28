@@ -25,5 +25,7 @@ public class Main {
         //Get words
         System.out.println("Tree words with N vowels: " + tree.getWords(1));
         System.out.println("Tree words with N vowels: " + tree.getWords(2));
+        System.out.println("Tree words with N vowels: " + tree.getWords(3));
+        System.out.println("Tree words with N vowels: " + tree.getWords(0));
     }
 }

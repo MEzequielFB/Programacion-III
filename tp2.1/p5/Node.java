@@ -9,6 +9,10 @@ public class Node {
         this.right = null;
     }
 
+    public boolean isExternalNode() {
+        return this.left == null && this.right == null;
+    }
+
     public boolean hasVowel() {
         return this.value == "A" || this.value == "E" || this.value == "I" || this.value == "O" || this.value == "U";
     }
