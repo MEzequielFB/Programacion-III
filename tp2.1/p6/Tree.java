@@ -13,15 +13,18 @@ public class Tree {
 
     private int getQuantitySamplesById(Node actual, int id) {
         if (actual != null) {
+            //Si el id del valor del nodo actual es igual al id requerido se retorna la cantidad de ejemplares del mismo
             if (actual.getValue().getId() == id) {
                 return actual.getValue().getSamplesQuantity();
             }
+            //Si no es igual, se busca saber si el id es menor o mayor al id del valor del nodo actual y luego llamar recursivamente pasando a uno de los nodos hijos (izquierdo o derecho)
             if (actual.getValue().getId() > id) {
                 return this.getQuantitySamplesById(actual.getLeft(), id);
             } else {
                 return this.getQuantitySamplesById(actual.getRight(), id);
             }
         }
+        //Si no se encuentra un valor con el id requerido se devuelve -1
         return -1;
     }
 
@@ -33,12 +36,15 @@ public class Tree {
     private LinkedList<Book> searchBooks(Node actual, Filter filter) {
         LinkedList<Book> books = new LinkedList<>();
         if (actual != null) {
+            //Si el valor del nodo actual cumple con el filtro se agrega a la lista
             if (actual.getValue().complies(filter)) {
                 books.add(actual.getValue());
             }
+            //Se llama recursivamente pasando a los hijos del nodo actual
             books.addAll(this.searchBooks(actual.getLeft(), filter));
             books.addAll(this.searchBooks(actual.getRight(), filter));
         }
+        //Devuelve la lista de libros filtrados
         return books;
     }
 

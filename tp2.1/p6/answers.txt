@@ -1,0 +1,8 @@
+1) ¿Qué estructura de datos utilizaría para almacenar todos los libros en memoria dentro
+de la aplicación?
+2) ¿Cómo resolvería cada uno de los servicios solicitados? ¿Utilizaría alguna estructura
+adicional de acceso para mejorar el costo de respuesta de cada servicio?
+
+1- Utilizaria un arbol de nodos para mejorar la performance de busqueda del un libro dado por su id, buscando una complejidad O(log2 n) si es que se usa una tecnica de balanceo, de lo contrario seria O(n) pero igualmente es factible. Tambien se tiene una complejidad O(n) en la insercion de los elementos
+
+2- La resolucion de cada servicio esta en codigo y comentado. Uso como estructura auxiliar de almacenamiento a las LinkedList ya que no se pide hacer adicionalmente nada con los elementos obtenidos. Si por ejemplo se necesitara que los elementos encontrados esten ordenados por distintos atributos, optaria por un ArrayList.
