@@ -18,6 +18,17 @@ public class Book implements Comparable<Book> {
         cont++;
     }
 
+    public boolean complies(Filter filter) {
+        if (filter.complies(this)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean containsGenre(String genre) {
+        return this.genres.contains(genre);
+    }
+
     public void addGenre(String genre) {
         if (!this.genres.contains(genre)) {
             this.genres.add(genre);
