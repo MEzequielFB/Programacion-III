@@ -9,6 +9,10 @@ public class Vertice {
         this.vertices_adyacentes = new LinkedList<>();
     }
 
+    public void removeVerticeAdyacente(Vertice vertice_adyacente) {
+        this.vertices_adyacentes.remove(vertice_adyacente);
+    }
+
     public void addVerticeAdyacente(Vertice vertice_adyacente) {
         if (!this.vertices_adyacentes.contains(vertice_adyacente)) {
             this.vertices_adyacentes.add(vertice_adyacente);
