@@ -142,8 +142,7 @@ public class GrafoDirigido implements Grafo {
 
     @Override
     public Iterator<Arco> obtenerArcos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'obtenerArcos'");
+        return this.arcos.iterator();
     }
 
     @Override
