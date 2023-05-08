@@ -1,6 +1,5 @@
 import java.util.Iterator;
 public interface Grafo {
-	
 	// Agrega un vertice 
 	public void agregarVertice(int verticeId);
 

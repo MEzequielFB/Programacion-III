@@ -15,6 +15,14 @@ public class GrafoDirigido implements Grafo {
         this.arcos = new LinkedList<>();
     }
 
+    public String getArcos() {
+        return arcos + "";
+    }
+
+    public String getVertices() {
+        return vertices + "";
+    }
+
     @Override
     public void agregarVertice(int verticeId) {
         //Verifica que no exista el vertice en la lista
@@ -24,8 +32,31 @@ public class GrafoDirigido implements Grafo {
         }
     }
 
+    //Borra los arcos que contienen un vertice con el id pasado por parametro
+    private void borrarArcosContienenVertice(int verticeId) {
+        //USO EL ITERATOR PARA QUE NO ME TIRE CurrentModificationException
+        Iterator<Arco> iterator_arcos = this.arcos.iterator();
+
+        while (iterator_arcos.hasNext()) {
+            Arco arco = iterator_arcos.next();
+
+            if (arco.getVerticeOrigen() == verticeId || arco.getVerticeDestino() == verticeId) {
+                iterator_arcos.remove();
+                this.cantidad_arcos--;
+            }
+        }
+
+        //Borra al vertice con el id pasado por parametro de las listas de adyacentes de todos los vertices del grafo
+        for (Vertice vertice : this.vertices) {
+            vertice.removeVerticeAdyacente(verticeId);
+        }
+    }
+
     @Override
     public void borrarVertice(int verticeId) {
+        this.borrarArcosContienenVertice(verticeId);
+
+        //ACA NO ME HACE FALTA USAR EL REMOVE DEL ITERATOR PORQUE UNA VEZ QUE ENCUENTA EL VERTICE A BORRAR NO VUELVE A ITERAR
         for (Vertice vertice : this.vertices) {
             if (vertice.getId() == verticeId) {
                 this.vertices.remove(vertice);
@@ -66,21 +97,27 @@ public class GrafoDirigido implements Grafo {
         return null;
     }
 
+    //Borra el arco con el origen y destino pasados por parametro. Despues borra de la lista de adyacentes del primer vertice al segundo vertice
     @Override
     public void borrarArco(int verticeId1, int verticeId2) {
+        //USO EL ITERATOR PARA QUE NO ME TIRE CurrentModificationException
+        Iterator<Arco> iterator_arco = this.arcos.iterator();
+
         //Recorre la lista de arcos
-        for (Arco arco : this.arcos) {
+        while (iterator_arco.hasNext()) {
+            Arco arco = iterator_arco.next();
+
             //Verifica que exista un arco con el origen y destino pasados por parametro
             if (arco.getVerticeOrigen() == verticeId1 && arco.getVerticeDestino() == verticeId2) {
                 //Elimina el arco de la lista y reduce la cantidad de arcos
-                this.arcos.remove(arco);
+                iterator_arco.remove();
                 this.cantidad_arcos--;
 
                 //Obtiene los vertices con los valores pasados por parametro
                 Vertice vertice1 = this.getVertice(verticeId1);
-                Vertice vertice2 = this.getVertice(verticeId2);
+                /* Vertice vertice2 = this.getVertice(verticeId2); */
                 //El primer vertice elimina de su lista de adyacentes al segundo vertice
-                vertice1.removeVerticeAdyacente(vertice2);
+                vertice1.removeVerticeAdyacente(verticeId2);
 
                 //retorna para no seguir iterando
                 return;
@@ -89,7 +126,7 @@ public class GrafoDirigido implements Grafo {
     }
 
     @Override
-    public boolean contieneVertice(int verticeId) { //No se puede hacer una busqueda que recorra la menor cantidad de vertices??
+    public boolean contieneVertice(int verticeId) { //¿NO SE PUEDE HACER UNA BUSQUEDA QUE RECORRA LA MENOR CANTIDAD DE VERTICES??
         for (Vertice vertice : this.vertices) { //Las LinkedList implementan Iterable
             if (vertice.getId() == verticeId) {
                 return true;

@@ -1,6 +1,7 @@
+import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Vertice {
+public class Vertice implements Iterable<Vertice> {
     private int id;
     private LinkedList<Vertice> vertices_adyacentes;
 
@@ -9,8 +10,19 @@ public class Vertice {
         this.vertices_adyacentes = new LinkedList<>();
     }
 
-    public void removeVerticeAdyacente(Vertice vertice_adyacente) {
-        this.vertices_adyacentes.remove(vertice_adyacente);
+    @Override
+    public Iterator<Vertice> iterator() {
+        return this.vertices_adyacentes.iterator();
+    }
+
+    public void removeVerticeAdyacente(int verticeId) {
+        Iterator<Vertice> iterator_adyacentes = this.vertices_adyacentes.iterator();
+        while (iterator_adyacentes.hasNext()) {
+            Vertice adyacente = iterator_adyacentes.next();
+            if (adyacente.getId() == verticeId) {
+                iterator_adyacentes.remove();
+            }
+        }
     }
 
     public void addVerticeAdyacente(Vertice vertice_adyacente) {
@@ -32,5 +44,10 @@ public class Vertice {
         catch(Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "\nVertice [id=" + id + "]";
     }
 }
