@@ -21,6 +21,8 @@ public class Main {
         grafo1.dfs();
 
         System.out.println("\nArcos del grafo: " + grafo1.getArcos());
-        System.out.println("Vertices del grafo: " + grafo1.getVertices());
+        System.out.println("\nVertices del grafo: " + grafo1.getVertices());
+        System.out.println("\nCantidad de vertices: " + grafo1.cantidadVertices());
+        System.out.println("\nCantidad de arcos: " + grafo1.cantidadArcos());
     }
 }

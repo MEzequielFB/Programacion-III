@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.LinkedList;
 
+//¿ESTAN BIEN PONER LOS ATRIBUTOS COLOR Y LOS TIEMPOS?
 public class Vertice implements Iterable<Vertice> {
     private int id;
     private String color;
@@ -30,6 +31,8 @@ public class Vertice implements Iterable<Vertice> {
             }
         }
 
+        //ESTO ME TIRA CurrentModificationException
+
         /* for (Vertice adyacente : this.vertices_adyacentes) {
             if (adyacente.getId() == verticeId) {
                 this.vertices_adyacentes.remove(adyacente);
@@ -37,9 +40,13 @@ public class Vertice implements Iterable<Vertice> {
         } */
     }
 
+    //NO USO ESTE METODO PARA EVITAR PASAR POR PARAMETRO UN OBJETO DE TIPO VERTICE
+
     /* public void removeVerticeAdyacente(Vertice vertice_adyacente) {
         this.vertices_adyacentes.remove(vertice_adyacente);
     } */
+
+    //INTENTO DE HACER UN ADD PASANDO UN ENTERO PERO ME CREA VERTICES DE MAS Y SE DESVIRTUA LA ESTRUCTURA
 
     /* public void addVerticeAdyacente(int verticeId) {
         for (Vertice adyacente : this.vertices_adyacentes) {
@@ -50,6 +57,7 @@ public class Vertice implements Iterable<Vertice> {
         this.vertices_adyacentes.add(new Vertice(verticeId));
     } */
 
+    //¿ESTO NO HAY FORMA DE HACERLO PASANDO POR PARAMETRO UN INT Y NO AGREGAR VERTICES DE MAS?
     public void addVerticeAdyacente(Vertice vertice_adyacente) {
         if (!this.vertices_adyacentes.contains(vertice_adyacente)) {
             this.vertices_adyacentes.add(vertice_adyacente);
