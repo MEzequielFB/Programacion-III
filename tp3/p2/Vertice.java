@@ -21,13 +21,34 @@ public class Vertice implements Iterable<Vertice> {
         return this.vertices_adyacentes.iterator();
     }
 
-    /* public Iterator<Vertice> getAdyacentes() {
-        return this.vertices_adyacentes.iterator();
+    public void removeVerticeAdyacente(int verticeId) {
+        Iterator<Vertice> iterator_adyacentes = this.vertices_adyacentes.iterator();
+        while (iterator_adyacentes.hasNext()) {
+            Vertice adyacente = iterator_adyacentes.next();
+            if (adyacente.getId() == verticeId) {
+                iterator_adyacentes.remove();
+            }
+        }
+
+        /* for (Vertice adyacente : this.vertices_adyacentes) {
+            if (adyacente.getId() == verticeId) {
+                this.vertices_adyacentes.remove(adyacente);
+            }
+        } */
+    }
+
+    /* public void removeVerticeAdyacente(Vertice vertice_adyacente) {
+        this.vertices_adyacentes.remove(vertice_adyacente);
     } */
 
-    public void removeVerticeAdyacente(Vertice vertice_adyacente) {
-        this.vertices_adyacentes.remove(vertice_adyacente);
-    }
+    /* public void addVerticeAdyacente(int verticeId) {
+        for (Vertice adyacente : this.vertices_adyacentes) {
+            if (adyacente.getId() == verticeId) {
+                return;
+            }
+        }
+        this.vertices_adyacentes.add(new Vertice(verticeId));
+    } */
 
     public void addVerticeAdyacente(Vertice vertice_adyacente) {
         if (!this.vertices_adyacentes.contains(vertice_adyacente)) {
@@ -72,5 +93,11 @@ public class Vertice implements Iterable<Vertice> {
         catch(Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "\nVertice [id=" + id + ", color=" + color + ", tiempo_descubrimiento=" + tiempo_descubrimiento
+                + ", tiempo_finalizacion=" + tiempo_finalizacion + "]";
     }
 }

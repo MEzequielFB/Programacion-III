@@ -26,4 +26,10 @@ public class Arco {
 	public String getEtiqueta() {
 		return this.etiqueta;
 	}
+
+	@Override
+	public String toString() {
+		return "\nArco [verticeOrigen=" + verticeOrigen + ", verticeDestino=" + verticeDestino + ", etiqueta=" + etiqueta
+				+ "]";
+	}
 }

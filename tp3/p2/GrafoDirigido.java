@@ -15,37 +15,60 @@ public class GrafoDirigido implements Grafo {
         this.arcos = new LinkedList<>();
     }
 
+    public String getArcos() {
+        return arcos + "";
+    }
+
+    public String getVertices() {
+        return vertices + "";
+    }
+
+    /* public Vertice getPrimerVertice() {
+        return this.vertices.getFirst();
+    } */
+
     @Override
     public void dfs() {
         String color_sin_visitar = "blanco";
         int tiempo = 0;
+        //Setea el color y los tiempos al valor predeterminado de cada vertice
         for (Vertice vertice : this.vertices) {
             vertice.setColor(color_sin_visitar);
             vertice.setTiempoDescubrimiento(tiempo);
             vertice.setTiempoFinalizacion(tiempo);
         }
+        //Se recorre cada vertice y sus adyacentes dependiendo de su color
         for (Vertice vertice : this.vertices) {
             if (vertice.getColor().equals(color_sin_visitar)) {
-                this.dfs_visit(vertice, tiempo, color_sin_visitar);
+                tiempo = this.dfs_visit(vertice, tiempo, color_sin_visitar);
             }
         }
     }
 
-    private void dfs_visit(Vertice vertice, int tiempo, String color_sin_visitar) {
+    private int dfs_visit(Vertice vertice, int tiempo, String color_sin_visitar) {
         String color_visitado = "amarillo";
         String color_completado = "negro";
+        //Setea al vertice como visitado
         vertice.setColor(color_visitado);
+        //Incrementa el tiempo y setea el tiempo de descubrimiento del vertice
         tiempo++;
         vertice.setTiempoDescubrimiento(tiempo);
+        //Recorre los adyacentes del vertice (el vertice es iterable)
         for (Vertice adyacente : vertice) {
+            //Si el adyacente no fue visitado se llama recursivamente a este metodo pasando al adyacente como parametro
             if (adyacente.getColor().equals(color_sin_visitar)) {
-                this.dfs_visit(adyacente, tiempo, color_sin_visitar);
+                tiempo = this.dfs_visit(adyacente, tiempo, color_sin_visitar);
             }
         }
+        //Se setea al vertice como completado (todos sus adyacentes ya fueron descubiertos)
         vertice.setColor(color_completado);
+        //Incrementa el tiempo y setea el tiempo de descubrimiento del vertice
         tiempo++;
         vertice.setTiempoFinalizacion(tiempo);
-        //Imprimir los vertices con sus valores
+        //Imprime los valores del vertice
+        System.out.println(vertice);
+        //Devuelve el tiempo para no perder el valor actual
+        return tiempo;
     }
 
     @Override
@@ -57,8 +80,52 @@ public class GrafoDirigido implements Grafo {
         }
     }
 
+    private void borrarArcosContienenVertice(int verticeId) {
+        //Borra los arcos que contienen un vertice con el id pasado por parametro
+        Iterator<Arco> iterator_arcos = this.arcos.iterator();
+
+        while (iterator_arcos.hasNext()) {
+            Arco arco = iterator_arcos.next();
+
+            if (arco.getVerticeOrigen() == verticeId || arco.getVerticeDestino() == verticeId) {
+                iterator_arcos.remove();
+                this.cantidad_arcos--;
+            }
+        }
+
+        //Borra al vertice con el id pasado por parametro de las listas de adyacentes de todos los vertices del grafo
+        for (Vertice vertice : this.vertices) {
+            vertice.removeVerticeAdyacente(verticeId);
+        }
+    }
+
     @Override
     public void borrarVertice(int verticeId) {
+        //Borra los arcos
+        /* Iterator<Arco> iterator_arcos = this.arcos.iterator();
+
+        while (iterator_arcos.hasNext()) {
+            Arco arco = iterator_arcos.next();
+
+            if (arco.getVerticeOrigen() == verticeId) {
+                this.borrarArco(verticeId, arco.getVerticeDestino());
+            }
+            if (arco.getVerticeDestino() == verticeId) {
+                this.borrarArco(arco.getVerticeOrigen(), verticeId);
+            }
+        } */
+
+        /* for (Arco arco : this.arcos) {
+            if (arco.getVerticeOrigen() == verticeId) {
+                this.borrarArco(verticeId, arco.getVerticeDestino());
+            }
+            if (arco.getVerticeDestino() == verticeId) {
+                this.borrarArco(arco.getVerticeOrigen(), verticeId);
+            }
+        } */
+
+        this.borrarArcosContienenVertice(verticeId);
+
         for (Vertice vertice : this.vertices) {
             if (vertice.getId() == verticeId) {
                 this.vertices.remove(vertice);
@@ -101,8 +168,31 @@ public class GrafoDirigido implements Grafo {
 
     @Override
     public void borrarArco(int verticeId1, int verticeId2) {
+        Iterator<Arco> iterator_arco = this.arcos.iterator();
+
         //Recorre la lista de arcos
-        for (Arco arco : this.arcos) {
+        while (iterator_arco.hasNext()) {
+            Arco arco = iterator_arco.next();
+
+            //Verifica que exista un arco con el origen y destino pasados por parametro
+            if (arco.getVerticeOrigen() == verticeId1 && arco.getVerticeDestino() == verticeId2) {
+                //Elimina el arco de la lista y reduce la cantidad de arcos
+                iterator_arco.remove();
+                this.cantidad_arcos--;
+
+                //Obtiene los vertices con los valores pasados por parametro
+                Vertice vertice1 = this.getVertice(verticeId1);
+                /* Vertice vertice2 = this.getVertice(verticeId2); */
+                //El primer vertice elimina de su lista de adyacentes al segundo vertice
+                vertice1.removeVerticeAdyacente(verticeId2);
+
+                //retorna para no seguir iterando
+                return;
+            }
+        }
+
+        //Recorre la lista de arcos
+        /* for (Arco arco : this.arcos) {
             //Verifica que exista un arco con el origen y destino pasados por parametro
             if (arco.getVerticeOrigen() == verticeId1 && arco.getVerticeDestino() == verticeId2) {
                 //Elimina el arco de la lista y reduce la cantidad de arcos
@@ -111,14 +201,14 @@ public class GrafoDirigido implements Grafo {
 
                 //Obtiene los vertices con los valores pasados por parametro
                 Vertice vertice1 = this.getVertice(verticeId1);
-                Vertice vertice2 = this.getVertice(verticeId2);
+                //Vertice vertice2 = this.getVertice(verticeId2);
                 //El primer vertice elimina de su lista de adyacentes al segundo vertice
-                vertice1.removeVerticeAdyacente(vertice2);
+                vertice1.removeVerticeAdyacente(verticeId2);
 
                 //retorna para no seguir iterando
                 return;
             }
-        }
+        } */
     }
 
     @Override
