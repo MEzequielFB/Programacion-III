@@ -2,6 +2,9 @@ import java.util.Iterator;
 public interface Grafo {
 
 	// Recorre el grafo
+	public void bfs();
+
+	// Recorre el grafo
 	public void dfs();
 	
 	// Agrega un vertice 

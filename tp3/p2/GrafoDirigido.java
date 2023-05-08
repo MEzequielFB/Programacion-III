@@ -24,6 +24,43 @@ public class GrafoDirigido implements Grafo {
     }
 
     @Override
+    public void bfs() {
+        LinkedList<Vertice> fila_vertices = new LinkedList<>();
+        String color_sin_visitar = "blanco";
+
+        for (Vertice vertice : this.vertices) {
+            vertice.setColor(color_sin_visitar);
+        }
+
+        for (Vertice vertice : this.vertices) {
+            if (vertice.getColor().equals(color_sin_visitar)) {
+                fila_vertices.addAll(bfs_visit(fila_vertices, vertice, color_sin_visitar));
+            }
+        }
+    }
+
+    private LinkedList<Vertice> bfs_visit(LinkedList<Vertice> fila_vertices, Vertice vertice, String color_sin_visitar) {
+        String color_visitado = "amarillo";
+
+        vertice.setColor(color_visitado);
+        fila_vertices.add(vertice);
+
+        while (!fila_vertices.isEmpty()) {
+            Vertice primer_vertice = fila_vertices.getFirst();
+            fila_vertices.removeFirst();
+
+            for (Vertice adyacente : primer_vertice) {
+                if (adyacente.getColor().equals(color_sin_visitar)) {
+                    adyacente.setColor(color_visitado);
+                    fila_vertices.add(adyacente);
+                }
+            }
+        }
+
+        return fila_vertices;
+    }
+
+    @Override
     public void dfs() {
         String color_sin_visitar = "blanco";
         int tiempo = 0;
