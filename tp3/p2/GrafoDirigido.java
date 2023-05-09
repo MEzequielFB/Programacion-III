@@ -25,26 +25,36 @@ public class GrafoDirigido implements Grafo {
 
     @Override
     public void bfs() {
-        LinkedList<Vertice> fila_vertices = new LinkedList<>();
         String color_sin_visitar = "blanco";
 
+        //Se setea el color de todos los vertices como blanco
         for (Vertice vertice : this.vertices) {
             vertice.setColor(color_sin_visitar);
         }
 
+        //Por cada vertice no visitado se llama a bsf_visit pasando el vertice actual y el color sin visitar
         for (Vertice vertice : this.vertices) {
             if (vertice.getColor().equals(color_sin_visitar)) {
-                fila_vertices.addAll(bfs_visit(fila_vertices, vertice, color_sin_visitar));
+                bfs_visit(vertice, color_sin_visitar);
             }
         }
     }
 
-    private LinkedList<Vertice> bfs_visit(LinkedList<Vertice> fila_vertices, Vertice vertice, String color_sin_visitar) {
+    private void bfs_visit(Vertice vertice, String color_sin_visitar) {
+        //Crea la lista en la que se almacenan los vertices
+        LinkedList<Vertice> fila_vertices = new LinkedList<>();
         String color_visitado = "amarillo";
 
+        //Se setea al  vertice como visitado y se agrega a la fila
         vertice.setColor(color_visitado);
         fila_vertices.add(vertice);
 
+        //Imprime el vertice para ver como se recorrio el grafo
+        System.out.println(vertice);
+
+        //Mientras la fila no este vacia...
+        //Se obtiene el primer elemento de esta y se elimina
+        //Despues se recorren los adyacentes del elemento obtenido, si sus adyacentes no fueron visitados se setean como visitados, se agrega a la fila y se imprimen
         while (!fila_vertices.isEmpty()) {
             Vertice primer_vertice = fila_vertices.getFirst();
             fila_vertices.removeFirst();
@@ -53,11 +63,11 @@ public class GrafoDirigido implements Grafo {
                 if (adyacente.getColor().equals(color_sin_visitar)) {
                     adyacente.setColor(color_visitado);
                     fila_vertices.add(adyacente);
+
+                    System.out.println(adyacente);
                 }
             }
         }
-
-        return fila_vertices;
     }
 
     @Override
