@@ -23,10 +23,9 @@ public class GrafoDirigido<T> implements Grafo<T> {
         }
 	}
 
-    //TAMBIEN TIENE QUE BORRAR LOS ARCOS ASOCIADOS AL VERTICE BORRADO
 	@Override
 	public void borrarVertice(int verticeId) {
-        //OPCION 1
+        /* //OPCION 1
 		Iterator<Integer> iterator_vertices = this.obtenerVertices();
         while (iterator_vertices.hasNext()) {
             Integer vertice = iterator_vertices.next();
@@ -44,29 +43,39 @@ public class GrafoDirigido<T> implements Grafo<T> {
                 this.cantidad_vertices--;
                 return;
             }
-        }
+        } */
 
         //OPCION 3
         Integer vertice_a_borrar = (Integer) verticeId;
-        this.vertices.remove(vertice_a_borrar);
-        this.cantidad_vertices--;
+        if (this.vertices.remove(vertice_a_borrar)) {
+            this.cantidad_vertices--;
+        }
 
         this.borrarArcos(verticeId);
 	}
 
     //Borra todos los arcos que contengan el vertice pasado por parametro
     private void borrarArcos(int verticeId) {
-        for (Arco<T> arco : this.arcos) {
+        Iterator<Arco<T>> arcos_vertice = this.obtenerArcos();
+        while (arcos_vertice.hasNext()) {
+            Arco<T> arco = arcos_vertice.next();
+            if (arco.getVerticeOrigen() == verticeId || arco.getVerticeDestino() == verticeId) {
+                arcos_vertice.remove();
+                this.cantidad_arcos--;
+            }
+        }
+
+        /* for (Arco<T> arco : this.arcos) {
             if (arco.getVerticeOrigen() == verticeId || arco.getVerticeDestino() == verticeId) {
                 this.arcos.remove(arco);
                 this.cantidad_arcos--;
             }
-        }
+        } */
     }
 
 	@Override
 	public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
-		if (!this.existeArco(verticeId1, verticeId2)) {
+		if (!this.existeArco(verticeId1, verticeId2) && this.contieneVertice(verticeId1) && this.contieneVertice(verticeId2)) {
             this.arcos.add(new Arco<T>(verticeId1, verticeId2, etiqueta));
             this.cantidad_arcos++;
         }

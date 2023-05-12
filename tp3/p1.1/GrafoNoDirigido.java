@@ -14,6 +14,6 @@ public class GrafoNoDirigido<T> extends GrafoDirigido<T> {
 	
 	@Override
 	public int cantidadArcos() {
-		return super.cantidadArcos() / 2;
+		return (int) Math.ceil((double) super.cantidadArcos() / 2.0); /* super.cantidadArcos() / 2 */
 	}
 }
