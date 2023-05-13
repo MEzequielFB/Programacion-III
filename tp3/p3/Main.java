@@ -22,9 +22,11 @@ public class Main {
         grafo1.agregarArco(1, 4, "se conecta con");
         grafo1.agregarArco(3, 4, "se conecta con");
         grafo1.agregarArco(1, 3, "se conecta con");
+        grafo1.agregarArco(1, 6, "se conecta con");
         grafo1.agregarArco(1, 7, "se conecta con");
         grafo1.agregarArco(6, 5, "se conecta con");
-        grafo1.agregarArco(6, 1, "se conecta con");
+        /* grafo1.agregarArco(6, 1, "se conecta con"); */
+        grafo1.agregarArco(5, 1, "se conecta con");
         grafo1.agregarArco(3, 6, "se conecta con");
         //Lo borra
         grafo1.borrarArco(3, 4);
@@ -38,6 +40,7 @@ public class Main {
         System.out.println("Existe arco: " + grafo1.existeArco(3, 4));
         System.out.println("Existe arco: " + grafo1.existeArco(1, 4)+"\n");
 
-        
+        ServicioDfs servicio_dfs = new ServicioDfs(grafo1);
+        System.out.println("Tiene ciclo: " + servicio_dfs.tieneCicloDfs());
     }
 }
