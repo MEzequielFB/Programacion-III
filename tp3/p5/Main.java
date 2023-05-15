@@ -64,6 +64,9 @@ public class Main {
             System.out.println(arcos_vertice.next());
         }
 
+        ServicioVerticesCamino servicio_vertices_camino0 = new ServicioVerticesCamino(grafo1, 10);
+        System.out.println("Vertices que pueden llegar a 6: " + servicio_vertices_camino0.vertices());
+
         ServicioVerticesCamino servicio_vertices_camino1 = new ServicioVerticesCamino(grafo1, 6);
         System.out.println("\nVertices que pueden llegar a 6: " + servicio_vertices_camino1.vertices());
 

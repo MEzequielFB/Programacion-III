@@ -15,17 +15,21 @@ public class ServicioVerticesCamino {
         //Crea una lista donde se agregan los vertices que tienen un camino hacia el vertice destino
         LinkedList<Integer> vertices_que_cumplen = new LinkedList<>();
 
-        //Se le pregunta a cada vertice del grafo si tiene un camino hacia el vertice destino
-        Iterator<Integer> vertices = this.grafo.obtenerVertices();
-        while (vertices.hasNext()) {
-            int vertice = vertices.next();
-            boolean resultado = existeCamino(vertice);
+        //Si el grafo contiene el vertice destino se buscan los vertices que tienen un camino hacia el mismo
+        if (grafo.contieneVertice(this.vertice_destino)) {
+            //Se le pregunta a cada vertice del grafo si tiene un camino hacia el vertice destino
+            Iterator<Integer> vertices = this.grafo.obtenerVertices();
+            while (vertices.hasNext()) {
+                int vertice = vertices.next();
+                boolean resultado = existeCamino(vertice);
 
-            //Si existe un camino o el vertice actual es igual al vertice destino se agrega a la lista
-            if (resultado || vertice == this.vertice_destino) {
-                vertices_que_cumplen.add(vertice);
+                //Si existe un camino o el vertice actual es igual al vertice destino se agrega a la lista
+                if (resultado || vertice == this.vertice_destino) {
+                    vertices_que_cumplen.add(vertice);
+                }
             }
         }
+
         //Se devuelve la lista de los vertices con un camino hacia el vertice destino
         return vertices_que_cumplen;
     }
