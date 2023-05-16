@@ -4,18 +4,18 @@ import java.util.LinkedList;
 
 public class ServicioCaminoLargo {
     private Grafo<?> grafo;
-    private int esquina_origen;
-    private int esquina_destino;
+    private int vertice_origen;
+    private int vertice_destino;
 
-    public ServicioCaminoLargo(Grafo<?> grafo, int esquina_origen, int esquina_destino) {
+    public ServicioCaminoLargo(Grafo<?> grafo, int vertice_origen, int vertice_destino) {
         this.grafo = grafo;
-        this.esquina_origen = esquina_origen;
-        this.esquina_destino = esquina_destino;
+        this.vertice_origen = vertice_origen;
+        this.vertice_destino = vertice_destino;
     }
 
     public List<Integer> camino() {
-        //Verifica que el grafo tenga ambas esquinas, sino, devuelve null
-        if (grafo.contieneVertice(this.esquina_origen) && grafo.contieneVertice(esquina_destino)) {
+        //Verifica que el grafo tenga ambos vertices, sino, devuelve null
+        if (grafo.contieneVertice(this.vertice_origen) && grafo.contieneVertice(vertice_destino)) {
 
             //En la lista camino se guardan todos los caminos encontrados
             //La lista camino_mas_largo es la que se le va a devolver al usuario
@@ -23,7 +23,7 @@ public class ServicioCaminoLargo {
             LinkedList<Integer> camino_mas_largo = new LinkedList<>();
 
             //Se obtienen los caminos y se guardan en la lista
-            this.obtenerCaminos2(caminos);
+            this.obtenerCaminos(caminos);
 
             //Una vez obtenidos todos los caminos se comparan y se queda con el mas grande (mayor size)
             for (LinkedList<Integer> camino : caminos) {
@@ -37,73 +37,73 @@ public class ServicioCaminoLargo {
         return null;
     }
 
-    private void obtenerCaminos2(LinkedList<LinkedList<Integer>> caminos) {
-        //La lista esquinas_visitadas se usa para no repetir arcos
-        LinkedList<Integer> esquinas_visitadas = new LinkedList<>();
+    private void obtenerCaminos(LinkedList<LinkedList<Integer>> caminos) {
+        //La lista vertices_visitados se usa para no repetir arcos
+        LinkedList<Integer> vertices_visitados = new LinkedList<>();
 
-        //Se agrega la esquina origen como primer elemento
-        esquinas_visitadas.add(this.esquina_origen);
+        //Se agrega la vertice origen como primer elemento
+        vertices_visitados.add(this.vertice_origen);
 
         //Se inicializa una variable de tipo entro en 0
         int contador = 0;
 
-        //Se recorren los adyacentes de la esquina origen
-        Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(this.esquina_origen);
+        //Se recorren los adyacentes de la vertice origen
+        Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(this.vertice_origen);
         while (adyacentes.hasNext()) {
             //Por cada adyacente se incrementa el contador
             contador++;
 
-            //Si la esquina origen tiene mas de un adyacente, el contador va a ser mayor a 1 en un momento dado
+            //Si el vertice origen tiene mas de un adyacente, el contador va a ser mayor a 1 en un momento dado
             //Si es asi, se borra el ultimo elemento de la lista (el adyacente anterior) para obtener los caminos del adyacente actual
             if (contador > 1) {
-                esquinas_visitadas.removeLast();
+                vertices_visitados.removeLast();
             }
 
             //Se guarda en una variable al adyacente actual
-            //Si no fue visitado se crea una lista con los elementos de la esquinas visitadas y se agrega el adyacente actual
-            //Esto se hace porque se va a pasar por parametro a esquinas_visitadas en el metodo agregarCamino y su contenido sera modificado
-            //Una vez que finaliza ese metodo la lista de esquinas visitadas vuelve al estado antes de llamar a ese metodo
+            //Si no fue visitado se crea una lista con los elementos de vertices_visitados (backup_visitados) y se agrega el adyacente actual
+            //Esto se hace porque se va a pasar por parametro a vertices_visitados en el metodo agregarCamino y su contenido sera modificado
+            //Una vez que finaliza ese metodo la lista de vertices visitados vuelve al estado antes de llamar a ese metodo
             int adyacente = adyacentes.next();
-            if (!esquinas_visitadas.contains(adyacente)) {
-                LinkedList<Integer> backup_visitadas = new LinkedList<>(esquinas_visitadas);
-                backup_visitadas.add(adyacente);
+            if (!vertices_visitados.contains(adyacente)) {
+                LinkedList<Integer> backup_visitados = new LinkedList<>(vertices_visitados);
+                backup_visitados.add(adyacente);
 
-                this.agregarCamino(adyacente, caminos, esquinas_visitadas);
+                this.agregarCamino(adyacente, caminos, vertices_visitados);
 
-                esquinas_visitadas = backup_visitadas;
+                vertices_visitados = backup_visitados;
             }
         }
     }
     
-    private void agregarCamino(int esquina, LinkedList<LinkedList<Integer>> caminos, LinkedList<Integer> esquinas_visitadas) {
-        //Se agrega la esquina pasada por parametro a las esquinas visitadas
-        esquinas_visitadas.add(esquina);
+    private void agregarCamino(int vertice, LinkedList<LinkedList<Integer>> caminos, LinkedList<Integer> vertices_visitados) {
+        //Se agrega el vertice pasada por parametro a los vertices visitados
+        vertices_visitados.add(vertice);
 
-        //Si la esquina es igual a la esquina destino se agrega el camino conseguido hasta el momento a los caminos y se retorna el metodo
-        if (esquina == this.esquina_destino) {
-            caminos.add(esquinas_visitadas);
+        //Si el vertice es igual al vertice destino se agrega el camino conseguido hasta el momento a la lista de caminos y se retorna el metodo
+        if (vertice == this.vertice_destino) {
+            caminos.add(vertices_visitados);
             return;
         }
 
-        //Se recorre los adyacentes de la esquina
-        Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(esquina);
+        //Se recorre los adyacentes del vertice
+        Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(vertice);
         while (adyacentes.hasNext()) {
-            //Se guarda el estado actual de la lista de esquinas visitadas
-            LinkedList<Integer> backup_visitadas = new LinkedList<>(esquinas_visitadas);
+            //Se guarda el estado actual de la lista de vertices visitados
+            LinkedList<Integer> backup_visitados = new LinkedList<>(vertices_visitados);
 
-            //Si el adyacente de la esquina no fue visitado
-            //Se pregunta si el adyacente es la esquina destino, si lo es se agrega a la lista de visitados y se agrega la lista de visitados como un camino. Finalmente retorna
+            //Si el adyacente del vertice no fue visitado
+            //Se pregunta si el adyacente es el vertice destino, si lo es se agrega a la lista de visitados y se agrega la lista de visitados como un camino. Finalmente retorna
             //De lo contrario llama recursivamente a agregarCamino pasando al adyacente como parametro para seguir el camino y ver si llega a destino
             //Cuando finaliza el agregarCamino recursivo, la lista de visitados vuelve al estado anterior ya que se buscara un camino a partir de otro adyacente si es que existe
             int adyacente = adyacentes.next();
-            if (!esquinas_visitadas.contains(adyacente)) {
-                if (adyacente == this.esquina_destino) {
-                    esquinas_visitadas.add(adyacente);
-                    caminos.add(esquinas_visitadas);
+            if (!vertices_visitados.contains(adyacente)) {
+                if (adyacente == this.vertice_destino) {
+                    vertices_visitados.add(adyacente);
+                    caminos.add(vertices_visitados);
                     return;
                 }
-                this.agregarCamino(adyacente, caminos, esquinas_visitadas);
-                esquinas_visitadas = backup_visitadas;
+                this.agregarCamino(adyacente, caminos, vertices_visitados);
+                vertices_visitados = backup_visitados;
             }
         }
     }
