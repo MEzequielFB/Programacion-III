@@ -18,10 +18,10 @@ public class Main {
         System.out.println("Cantidad vertices: " + grafo1.cantidadVertices());
         System.out.println("Cantidad arcos: " + grafo1.cantidadArcos());
 
-        ServicioCaminoCorto servicio_camino_corto1 = new ServicioCaminoCorto(grafo1, 2, 5);
+        ServicioCaminoCorto servicio_camino_corto1 = new ServicioCaminoCorto(grafo1, 2, 6);
         System.out.println("\nCamino mas corto de 2 a 6: " + servicio_camino_corto1.camino());
 
-        ServicioCaminoCorto servicio_camino_corto2 = new ServicioCaminoCorto(grafo1, 1, 4);
-        System.out.println("\nCamino mas corto de 1 a 4: " + servicio_camino_corto2.camino());
+        /* ServicioCaminoCorto servicio_camino_corto2 = new ServicioCaminoCorto(grafo1, 1, 4);
+        System.out.println("\nCamino mas corto de 1 a 4: " + servicio_camino_corto2.camino()); */
     }
 }
