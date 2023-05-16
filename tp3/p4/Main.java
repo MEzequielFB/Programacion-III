@@ -27,5 +27,17 @@ public class Main {
 
         ServicioCaminoLargo servicioCaminoLargo1 = new ServicioCaminoLargo(grafo1, 2, 6);
         System.out.println("Camino mas largo de 2 a 6: " + servicioCaminoLargo1.camino());
+
+        ServicioCaminoLargo servicioCaminoLargo2 = new ServicioCaminoLargo(grafo1, 1, 5);
+        System.out.println("Camino mas largo de 1 a 5: " + servicioCaminoLargo2.camino());
+
+        ServicioCaminoLargo servicioCaminoLargo3 = new ServicioCaminoLargo(grafo1, 3, 4);
+        System.out.println("Camino mas largo de 3 a 4: " + servicioCaminoLargo3.camino());
+
+        ServicioCaminoLargo servicioCaminoLargo4 = new ServicioCaminoLargo(grafo1, 4, 1);
+        System.out.println("Camino mas largo de 4 a 1: " + servicioCaminoLargo4.camino());
+
+        ServicioCaminoLargo servicioCaminoLargo5 = new ServicioCaminoLargo(grafo1, 5, 10);
+        System.out.println("Camino mas largo de 4 a 1: " + servicioCaminoLargo5.camino());
     }
 }
