@@ -24,7 +24,13 @@ public class Main {
         ServicioCaminoCorto servicio_camino_corto1 = new ServicioCaminoCorto(grafo1, 2, 6);
         System.out.println("\nCamino mas corto de 2 a 6: " + servicio_camino_corto1.camino());
 
-        /* ServicioCaminoCorto servicio_camino_corto2 = new ServicioCaminoCorto(grafo1, 1, 4);
-        System.out.println("\nCamino mas corto de 1 a 4: " + servicio_camino_corto2.camino()); */
+        ServicioCaminoCorto servicio_camino_corto2 = new ServicioCaminoCorto(grafo1, 1, 4);
+        System.out.println("Camino mas corto de 1 a 4: " + servicio_camino_corto2.camino());
+
+        ServicioCaminoCorto servicio_camino_corto3 = new ServicioCaminoCorto(grafo1, 3, 5);
+        System.out.println("Camino mas corto de 1 a 4: " + servicio_camino_corto3.camino());
+
+        ServicioCaminoCorto servicio_camino_corto4 = new ServicioCaminoCorto(grafo1, 4, 1);
+        System.out.println("Camino mas corto de 1 a 4: " + servicio_camino_corto4.camino());
     }
 }
