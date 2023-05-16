@@ -35,11 +35,20 @@ public class ServicioCaminoCorto {
         LinkedList<Integer> esquinas_visitadas = new LinkedList<>();
         LinkedList<Integer> cola = new LinkedList<>();
 
+        /* boolean esquina_destino_encontrada = false; */
+
         esquinas_visitadas.add(this.esquina_origen);
         cola.add(this.esquina_origen);
 
         while (!cola.isEmpty()) {
             int primer_elemento = cola.removeFirst();
+
+            /* if (esquina_destino_encontrada) {
+                esquinas_visitadas.removeLast();
+                esquina_destino_encontrada = false;
+
+                esquinas_visitadas.add(primer_elemento);
+            } */
 
             int contador = 0;
 
@@ -59,7 +68,11 @@ public class ServicioCaminoCorto {
                     LinkedList<Integer> backup_visitadas = new LinkedList<>(esquinas_visitadas);
                     backup_visitadas.add(adyacente);
 
-                    this.agregarCamino(adyacente, caminos, esquinas_visitadas);
+                    /* this.agregarCamino(adyacente, caminos, esquinas_visitadas); */
+                    if (adyacente == this.esquina_destino) {
+                        caminos.add(new LinkedList<>(backup_visitadas));
+                        /* esquina_destino_encontrada = true; */
+                    }
 
                     esquinas_visitadas = backup_visitadas;
                 }
