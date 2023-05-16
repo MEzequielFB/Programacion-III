@@ -35,7 +35,7 @@ public class ServicioCaminoCorto {
         LinkedList<Integer> esquinas_visitadas = new LinkedList<>();
         LinkedList<Integer> cola = new LinkedList<>();
 
-        esquinas_visitadas.add(esquina_origen);
+        esquinas_visitadas.add(this.esquina_origen);
         cola.add(this.esquina_origen);
 
         while (!cola.isEmpty()) {
@@ -70,8 +70,15 @@ public class ServicioCaminoCorto {
     private void agregarCamino(int esquina, LinkedList<LinkedList<Integer>> caminos, LinkedList<Integer> esquinas_visitadas) {
         esquinas_visitadas.add(esquina);
 
+        if (esquina == this.esquina_destino) {
+            caminos.add(esquinas_visitadas);
+            return;
+        }
+
         Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(esquina);
         while (adyacentes.hasNext()) {
+            LinkedList<Integer> backup_visitadas = new LinkedList<>(esquinas_visitadas);
+
             int adyacente = adyacentes.next();
             if (!esquinas_visitadas.contains(adyacente)) {
                 if (adyacente == this.esquina_destino) {
@@ -80,73 +87,8 @@ public class ServicioCaminoCorto {
                     return;
                 }
                 this.agregarCamino(adyacente, caminos, esquinas_visitadas);
+                esquinas_visitadas = backup_visitadas;
             }
         }
     }
-
-    private void obtenerCaminos(LinkedList<LinkedList<Integer>> caminos) {
-        LinkedList<Integer> esquinas_visitadas = new LinkedList<>();
-        LinkedList<Integer> cola = new LinkedList<>();
-
-        Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(this.esquina_origen);
-        while (adyacentes.hasNext()) {
-            int adyacente = adyacentes.next();
-            esquinas_visitadas.add(adyacente);
-            /* LinkedList<Integer> posible_camino = this.obtenerCamino(adyacente, esquinas_visitadas); */
-            //this.obtenerCaminosAdyacente(adyacente, esquinas_visitadas, caminos);
-
-            /* if (posible_camino.contains(this.esquina_destino)) {
-                caminos.add(posible_camino);
-            } */
-        }
-
-        /* esquinas_visitadas.add(this.esquina_origen);
-        cola.add(this.esquina_origen);
-
-        while (!cola.isEmpty()) {
-            int primer_elemento = cola.removeFirst();
-
-            //Si ningun adyacente matcheo con la esquina destino, se sigue con el recorrido normalmente
-            Iterator<Integer> adyacentes2 = grafo.obtenerAdyacentes(primer_elemento);
-            while (adyacentes2.hasNext()) {
-                int adyacente = adyacentes2.next();
-                if (!esquinas_visitadas.contains(adyacente)) {
-                    esquinas_visitadas.add(adyacente);
-                    cola.add(adyacente);
-                    
-                    LinkedList<Integer> posible_camino = this.obtenerCamino(adyacente);
-                    if (posible_camino.contains(this.esquina_destino)) {
-                        caminos.add(posible_camino);
-                    }
-                }
-            }
-        } */
-    }
-
-    /* private void obtenerCaminosAdyacente(int esquina, LinkedList<Integer> esquinas_visitadas, LinkedList<LinkedList<Integer>> caminos) {
-        LinkedList<Integer> esquinas_visitadas2 = esquinas_visitadas;
-        LinkedList<Integer> camino = esquinas_visitadas;
-        LinkedList<Integer> cola = new LinkedList<>();
-
-        cola.add(esquina);
-
-        while (!cola.isEmpty()) {
-            int primer_elemento = cola.removeFirst();
-
-            Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(primer_elemento);
-            while (adyacentes.hasNext()) {
-                int adyacente = adyacentes.next();
-                esquinas_visitadas2.add(adyacente);
-                cola.add(adyacente);
-                camino.add(adyacente);
-                
-                if (adyacente == this.esquina_destino) {
-                    caminos.add(camino);
-                    camino = esquinas_visitadas;
-                }
-            }
-        }
-
-        //return esquinas_visitadas;
-    } */
 }

@@ -10,8 +10,11 @@ public class Main {
 
         grafo1.agregarArco(1, 3, "se conecta con");
         grafo1.agregarArco(1, 5, "se conecta con");
+        grafo1.agregarArco(1, 6, "se conecta con");
         grafo1.agregarArco(2, 1, "se conecta con");
         grafo1.agregarArco(3, 5, "se conecta con");
+        grafo1.agregarArco(3, 4, "se conecta con");
+        grafo1.agregarArco(4, 5, "se conecta con");
         grafo1.agregarArco(5, 6, "se conecta con");
         grafo1.agregarArco(6, 4, "se conecta con");
 
