@@ -21,6 +21,8 @@ public class ServicioDarConexion {
         return null;
     }
 
+    //Se busca un camino a partir de cada adyacente de la computadora origen
+    //No se toma en cuenta la computadora fuera de servicio para la busqueda
     private LinkedList<Integer> obtenerCamino() {
         LinkedList<Integer> computadoras_visitadas = new LinkedList<>();
         computadoras_visitadas.add(this.computadora_origen);
@@ -31,7 +33,10 @@ public class ServicioDarConexion {
         while (adyacentes.hasNext()) {
             int adyacente = adyacentes.next();
 
-            contador++;
+            //Solo incrementa si el adyacente no es la computadora fuera de servicio
+            if (adyacente != this.computadora_fuera_de_servicio) {
+                contador++;
+            }
             if (contador > 1) {
                 computadoras_visitadas.removeLast();
             }
@@ -48,11 +53,11 @@ public class ServicioDarConexion {
                 computadoras_visitadas = backup_visitadas;
             }
         }
-        
-
         return null;
     }
 
+    //Se buscan todos los caminos posibles a partir de computadora
+    //Devuelve el primer camino en el que encuentra a la computadora destino
     private LinkedList<Integer> buscarCamino(int computadora, LinkedList<Integer> computadoras_visitadas) {
         computadoras_visitadas.add(computadora);
 
