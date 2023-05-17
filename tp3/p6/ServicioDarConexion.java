@@ -23,32 +23,32 @@ public class ServicioDarConexion {
 
     private LinkedList<Integer> obtenerCamino() {
         LinkedList<Integer> computadoras_visitadas = new LinkedList<>();
-        LinkedList<Integer> cola = new LinkedList<>();
-
         computadoras_visitadas.add(this.computadora_origen);
-        cola.add(this.computadora_origen);
 
-        while (!cola.isEmpty()) {
-            int primer_elemento = cola.removeFirst();
+        int contador = 0;
 
-            Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(primer_elemento);
-            while (adyacentes.hasNext()) {
-                int adyacente = adyacentes.next();
+        Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(this.computadora_origen);
+        while (adyacentes.hasNext()) {
+            int adyacente = adyacentes.next();
 
-                if (!computadoras_visitadas.contains(adyacente) && adyacente != this.computadora_fuera_de_servicio) {
-                    LinkedList<Integer> backup_visitadas = new LinkedList<>(computadoras_visitadas);
-                    backup_visitadas.add(adyacente);
+            contador++;
+            if (contador > 1) {
+                computadoras_visitadas.removeLast();
+            }
 
-                    LinkedList<Integer> posible_camino = this.buscarCamino(adyacente, computadoras_visitadas);
-                    if (posible_camino != null) {
-                        return posible_camino;
-                    }
+            if (!computadoras_visitadas.contains(adyacente) && adyacente != this.computadora_fuera_de_servicio) {
+                LinkedList<Integer> backup_visitadas = new LinkedList<>(computadoras_visitadas);
+                backup_visitadas.add(adyacente);
 
-                    computadoras_visitadas = backup_visitadas;
-                    cola.add(adyacente);
+                LinkedList<Integer> posible_camino = this.buscarCamino(adyacente, computadoras_visitadas);
+                if (posible_camino != null) {
+                    return posible_camino;
                 }
+
+                computadoras_visitadas = backup_visitadas;
             }
         }
+        
 
         return null;
     }
@@ -63,8 +63,16 @@ public class ServicioDarConexion {
         Iterator<Integer> adyacentes = this.grafo.obtenerAdyacentes(computadora);
         while (adyacentes.hasNext()) {
             int adyacente = adyacentes.next();
-            if (!computadoras_visitadas.contains(adyacente)) {
-                return this.buscarCamino(adyacente, computadoras_visitadas);
+            if (!computadoras_visitadas.contains(adyacente) && adyacente != this.computadora_fuera_de_servicio) {
+                LinkedList<Integer> backup_visitados = new LinkedList<>(computadoras_visitadas);
+                backup_visitados.add(adyacente);
+
+                LinkedList<Integer> posible_camino = this.buscarCamino(adyacente, computadoras_visitadas);
+                if (posible_camino != null) {
+                    return posible_camino;
+                } else {
+                    computadoras_visitadas = backup_visitados;
+                }
             }
         }
         return null;
