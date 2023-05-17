@@ -70,7 +70,7 @@ public class ServicioDarConexion {
             int adyacente = adyacentes.next();
             if (!computadoras_visitadas.contains(adyacente) && adyacente != this.computadora_fuera_de_servicio) {
                 LinkedList<Integer> backup_visitados = new LinkedList<>(computadoras_visitadas);
-                backup_visitados.add(adyacente);
+                /* backup_visitados.add(adyacente); */
 
                 LinkedList<Integer> posible_camino = this.buscarCamino(adyacente, computadoras_visitadas);
                 if (posible_camino != null) {
