@@ -7,7 +7,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
     private LinkedList<Integer> vertices;
     private LinkedList<Arco<T>> arcos;
 
-    public GrafoDirigido(int cantidad_vertices, int cantidad_arcos) {
+    public GrafoDirigido() {
         this.cantidad_vertices = 0;
         this.cantidad_arcos = 0;
         this.vertices = new LinkedList<>();
@@ -45,8 +45,10 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
     @Override
     public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
-        if (!this.existeArco(verticeId1, verticeId2)) {
-            this.arcos.add(new Arco<T>(verticeId1, verticeId2, etiqueta));
+        if (this.contieneVertice(verticeId1) && this.contieneVertice(verticeId2)) {
+            if (!this.existeArco(verticeId1, verticeId2)) {
+                this.arcos.add(new Arco<T>(verticeId1, verticeId2, etiqueta));
+            }
         }
     }
 
@@ -63,7 +65,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
     @Override
     public boolean existeArco(int verticeId1, int verticeId2) {
-        Arco<String> arco_buscado = new Arco<>(verticeId1, verticeId1, "");
+        Arco<String> arco_buscado = new Arco<>(verticeId1, verticeId2, "");
         return this.arcos.contains(arco_buscado);
     }
 
