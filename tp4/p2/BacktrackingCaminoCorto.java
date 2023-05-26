@@ -22,15 +22,20 @@ public class BacktrackingCaminoCorto {
             int fila_actual = this.origen;
             int columna_actual = this.origen;
 
-            /* casillas_visitadas.add(this.origen); */
-            this.buscarCaminos(this.matriz.getValorPosicion(fila_actual, columna_actual), casillas_visitadas, fila_actual, columna_actual);
+            this.buscarCaminos(casillas_visitadas, fila_actual, columna_actual);
         }
         return this.solucion;
     }
 
-    private void buscarCaminos(int valor, LinkedList<Integer> casillas_visitadas, int fila_actual, int columna_actual) {
+    private void buscarCaminos(LinkedList<Integer> casillas_visitadas, int fila_actual, int columna_actual) {
+        //Obtiene el valor de una posicion de la matriz y lo agrega a las casillas visitadas (los valores de las casillas de la matriz no se repiten)
+        int valor = this.matriz.getValorPosicion(fila_actual, columna_actual);
         casillas_visitadas.add(valor);
-        /* if (valor == this.destino) { */
+
+        //Verifica si la casilla actual es la destino
+        //Si los es calcula el valor total del camino recorrido
+        //Despues pregunta que ese valor total sea menor al valor solucion hasta el momento O que el valor solucion sea null
+        //Si es true reemplaza el camino solucion y el valor solucion
         if (this.esPosicionDestino(fila_actual, columna_actual)) {
             int valor_total_actual = this.calcularValor(casillas_visitadas);
             if (this.valor_solucion == null || valor_total_actual < this.valor_solucion) {
@@ -39,39 +44,52 @@ public class BacktrackingCaminoCorto {
                 this.valor_solucion = valor_total_actual;
             }
         } else {
-            //Hacia arriba
-            if (this.esCasillaValida(fila_actual - 1, columna_actual)) {
-                int valor_adyacente = this.matriz.getValorPosicion(fila_actual - 1, columna_actual);
-                if (!casillas_visitadas.contains(valor_adyacente)) {
-                    this.buscarCaminos(valor_adyacente, casillas_visitadas, fila_actual - 1, columna_actual);
-                    casillas_visitadas.removeLast();
-                }
-            }
+            //Si la posicion actual no es la destino...
+            //Calcula el valor total obtenido hasta el momento
+            //Usa el valor total como poda del backtracking
+            //Si el valor solucion es null o el valor actual no se pasa del valor solucion obtenido hasta el momento procede
 
-            //Hacia izquierda
-            if (this.esCasillaValida(fila_actual, columna_actual - 1)) {
-                int valor_adyacente = this.matriz.getValorPosicion(fila_actual, columna_actual - 1);
-                if (!casillas_visitadas.contains(valor_adyacente)) {
-                    this.buscarCaminos(valor_adyacente, casillas_visitadas, fila_actual, columna_actual - 1);
-                    casillas_visitadas.removeLast();
-                }
-            }
+            int valor_total_actual = this.calcularValor(casillas_visitadas);
+            if (this.valor_solucion == null || valor_total_actual < this.valor_solucion) {
 
-            //Hacia abajo
-            if (this.esCasillaValida(fila_actual + 1, columna_actual)) {
-                int valor_adyacente = this.matriz.getValorPosicion(fila_actual + 1, columna_actual);
-                if (!casillas_visitadas.contains(valor_adyacente)) {
-                    this.buscarCaminos(valor_adyacente, casillas_visitadas, fila_actual + 1, columna_actual);
-                    casillas_visitadas.removeLast();
-                }
-            }
+                //Cambia el valor de la fila o la columna y pregunta si es una casilla valida (que esta dentro de los limites de la matriz)
+                //Si lo esta, obtiene el valor de la casilla adyacente a la actual, verifica que no haya sido visitada y llama recursivamente
+                //Despues elimina la ultima casilla visitada agregada a la lista
 
-            //Hacia derecha
-            if (this.esCasillaValida(fila_actual, columna_actual + 1)) {
-                int valor_adyacente = this.matriz.getValorPosicion(fila_actual, columna_actual + 1);
-                if (!casillas_visitadas.contains(valor_adyacente)) {
-                    this.buscarCaminos(valor_adyacente, casillas_visitadas, fila_actual, columna_actual + 1);
-                    casillas_visitadas.removeLast();
+                //Hacia arriba
+                if (this.esCasillaValida(fila_actual - 1, columna_actual)) {
+                    int valor_adyacente = this.matriz.getValorPosicion(fila_actual - 1, columna_actual);
+                    if (!casillas_visitadas.contains(valor_adyacente)) {
+                        this.buscarCaminos(casillas_visitadas, fila_actual - 1, columna_actual);
+                        casillas_visitadas.removeLast();
+                    }
+                }
+
+                //Hacia izquierda
+                if (this.esCasillaValida(fila_actual, columna_actual - 1)) {
+                    int valor_adyacente = this.matriz.getValorPosicion(fila_actual, columna_actual - 1);
+                    if (!casillas_visitadas.contains(valor_adyacente)) {
+                        this.buscarCaminos(casillas_visitadas, fila_actual, columna_actual - 1);
+                        casillas_visitadas.removeLast();
+                    }
+                }
+
+                //Hacia abajo
+                if (this.esCasillaValida(fila_actual + 1, columna_actual)) {
+                    int valor_adyacente = this.matriz.getValorPosicion(fila_actual + 1, columna_actual);
+                    if (!casillas_visitadas.contains(valor_adyacente)) {
+                        this.buscarCaminos(casillas_visitadas, fila_actual + 1, columna_actual);
+                        casillas_visitadas.removeLast();
+                    }
+                }
+
+                //Hacia derecha
+                if (this.esCasillaValida(fila_actual, columna_actual + 1)) {
+                    int valor_adyacente = this.matriz.getValorPosicion(fila_actual, columna_actual + 1);
+                    if (!casillas_visitadas.contains(valor_adyacente)) {
+                        this.buscarCaminos(casillas_visitadas, fila_actual, columna_actual + 1);
+                        casillas_visitadas.removeLast();
+                    }
                 }
             }
         }
@@ -95,5 +113,10 @@ public class BacktrackingCaminoCorto {
 
     private boolean sonCasillasValidas() {
         return this.origen >= 0 && this.origen < this.matriz.getCantFilas() && this.origen < this.matriz.getCantColumnas() && this.destino >= 0 && this.destino < this.matriz.getCantFilas() && this.destino < this.matriz.getCantColumnas();
+    }
+
+    @Override
+    public String toString() {
+        return "Solucion: " + this.solucion + ", valor total de la solucion: " + this.valor_solucion;
     }
 }
