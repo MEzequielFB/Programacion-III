@@ -4,34 +4,86 @@ import java.util.List;
 public class BackAtila {
     private List<Posicion> solucion;
     private static int _valor_pisado;
-    private static int _valor_sin_pisar;
-    private static int _valor_pasado;
 
     public BackAtila() {
         this.solucion = new ArrayList<>();
         _valor_pisado = 0;
-        _valor_sin_pisar = 1;
-        _valor_pasado = 2;
     }
 
     public List<Posicion> encontrarPosibleCamino(Matriz matriz) {
         for (int i = 0; i < matriz.getCantFilas(); i++) {
             for (int j = 0; j < matriz.getCantColumnas(); j++) {
-                if (matriz.getValorPos(i, j) == _valor_pisado && this.esEntrada(i, j, matriz)) {
-
-                    this.backtracking(matriz, i, j);
+                if (this.fuePisado(matriz, i, j) && this.esEntrada(i, j, matriz)) {
+                    boolean hay_solucion = this.backtracking(matriz, i, j);
+                    if (hay_solucion) {
+                        return this.solucion;
+                    }
                     this.solucion.remove(this.solucion.size()-1);
                 }
             }
         }
-        return solucion;
+        return this.solucion;
     }
 
-    private void backtracking(Matriz matriz, int fila, int columna) {
+    private boolean backtracking(Matriz matriz, int fila, int columna) {
         this.solucion.add(new Posicion(fila, columna));
         if (this.esSolucion(matriz, fila, columna)) {
+            return true;
+        } else {
+            if (this.esPosicionValida(matriz, fila, columna)) {
 
+                boolean hay_solucion = false;
+                if (!this.fuePasado(matriz, fila, columna-1)) {
+                    hay_solucion = this.backtracking(matriz, fila, columna-1);
+                    if (hay_solucion) {
+                        return hay_solucion;
+                    }
+                    this.solucion.remove(this.solucion.size()-1);
+                }
+
+                if (!this.fuePasado(matriz, fila+1, columna)) {
+                    hay_solucion = this.backtracking(matriz, fila+1, columna);
+                    if (hay_solucion) {
+                        return hay_solucion;
+                    }
+                    this.solucion.remove(this.solucion.size()-1);
+                }
+
+                if (!this.fuePasado(matriz, fila, columna+1)) {
+                    hay_solucion = this.backtracking(matriz, fila, columna+1);
+                    if (hay_solucion) {
+                        return hay_solucion;
+                    }
+                    this.solucion.remove(this.solucion.size()-1);
+                }
+
+                if (!this.fuePasado(matriz, fila-1, columna)) {
+                    hay_solucion = this.backtracking(matriz, fila-1, columna);
+                    if (hay_solucion) {
+                        return hay_solucion;
+                    }
+                    this.solucion.remove(this.solucion.size()-1);
+                }
+            }
         }
+        return false;
+    }
+
+    private boolean esPosicionValida(Matriz matriz, int fila, int columna) {
+        return fila >= 0 && fila < matriz.getCantFilas() && columna >= 0 && columna < matriz.getCantColumnas() && this.fuePisado(matriz, fila, columna);
+    }
+
+    private boolean fuePisado(Matriz matriz, int fila, int columna) {
+        return matriz.getValorPos(fila, columna) == _valor_pisado;
+    }
+
+    private boolean fuePasado(Matriz matriz, int fila, int columna) {
+        for (Posicion posicion : this.solucion) {
+            if (posicion.getFila() == fila && posicion.getColumna() == columna) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean esSolucion(Matriz matriz, int fila, int columna) {

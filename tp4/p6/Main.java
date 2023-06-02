@@ -11,5 +11,8 @@ public class Main {
         matriz.setPosValor(3, 3, 1);
 
         matriz.imprimirMatriz();
+
+        BackAtila back_atila = new BackAtila();
+        System.out.println("Solucion: " + back_atila.encontrarPosibleCamino(matriz));
     }
 }

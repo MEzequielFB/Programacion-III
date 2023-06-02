@@ -17,6 +17,6 @@ public class Posicion {
 
     @Override
     public String toString() {
-        return "Fila: " + this.getFila() + " - Columna: " + this.getColumna();
+        return this.getFila() + ";" + this.getColumna();
     }
 }
