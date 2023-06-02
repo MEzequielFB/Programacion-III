@@ -14,5 +14,8 @@ public class Main {
 
         BackAtila back_atila = new BackAtila();
         System.out.println("Solucion: " + back_atila.encontrarPosibleCamino(matriz));
+
+        BackAtilaAllSolutions back_atila2 = new BackAtilaAllSolutions();
+        System.out.println("\nSolucion2: " + back_atila2.encontrarPosibleCamino(matriz));
     }
 }
