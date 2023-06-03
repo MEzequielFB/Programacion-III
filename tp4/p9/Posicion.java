@@ -14,4 +14,15 @@ public class Posicion {
     public int getColumna() {
         return this.columna;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        try {
+            Posicion otra_posicion = (Posicion) o;
+            return this.getFila() == otra_posicion.getFila() && this.getColumna() == otra_posicion.getColumna();
+        }
+        catch (Exception exc) {
+            return false;
+        }
+    }
 }
