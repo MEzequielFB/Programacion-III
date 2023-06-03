@@ -12,12 +12,16 @@ public class BackSubconjuntos {
     }
 
     public List<List<Integer>> obtenerSoluciones(List<Integer> estado, int tamanio_subconjunto) {
+        //Verifica que el tamanio del subconjunto sea menor al tamanio del estado
         if (!estado.isEmpty() && estado.size() > tamanio_subconjunto) {
+            //Crea la la lista solucion parcial
             List<Integer> solucion_parcial = new ArrayList<>();
             
+            //Llama al backtracking agregando el primer elemento del estado
             this.backtracking(1, estado, solucion_parcial, tamanio_subconjunto);
             solucion_parcial.remove(solucion_parcial.size()-1);
 
+            //Llama al backtracking sin agregar al primer elemento del estado
             this.backtracking(0, estado, solucion_parcial, tamanio_subconjunto);
             solucion_parcial.remove(solucion_parcial.size()-1);
         }
@@ -26,12 +30,18 @@ public class BackSubconjuntos {
     }
 
     private void backtracking(int numero, List<Integer> estado, List<Integer> solucion_parcial, int tamanio_subconjunto) {
+        //Agrega el numero (0 o 1) a la solucion parcial
         solucion_parcial.add(numero);
 
+        //Si es solucion se agrega a la lista de soluciones
         if (this.esSolucion(estado, solucion_parcial, tamanio_subconjunto)) {
             this.soluciones.add(this.obtenerSolucion(estado, solucion_parcial));
         } else {
+            //Si el tamanio de la solucion parcial es menor a la del estado entra al if (condicion de corte)
+            //Si la cantidad de numeros de la solucion parcial es menor al tamanio pasado por parametro entra al if (poda)
+            //Despues llama al backtracking sin agregar el proximo elemento
             if (solucion_parcial.size() < estado.size()) {
+
                 if (this.getCantidadNumeros(solucion_parcial) < tamanio_subconjunto) {
                     this.backtracking(1, estado, solucion_parcial, tamanio_subconjunto);
                     solucion_parcial.remove(solucion_parcial.size()-1);
