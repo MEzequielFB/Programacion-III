@@ -25,32 +25,61 @@ public class BackCamino {
     }
 
     public List<Posicion> buscarCamino(int [][] estado) {
-        if (estado.length > 0 && this.sonPosicionesValidas(estado) && !this.esSolucion()) {
-            int cant_celdas_pasadas = 0;
-            this.backtracking(estado, this.fila_robot, this.fila_robot, cant_celdas_pasadas);
+        if (estado.length > 0 && this.sonPosicionesValidas(estado)) {
+            this.backtracking(estado, this.fila_robot, this.fila_robot);
             this.solucion_parcial.remove(this.solucion_parcial.size()-1);
-            cant_celdas_pasadas--;
         }
         return this.solucion;
     }
 
-    private void backtracking(int [][] estado, int fila, int columna, int cant_celdas_pasadas) {
+    private void backtracking(int [][] estado, int fila, int columna) {
         this.solucion_parcial.add(new Posicion(fila, columna));
-        cant_celdas_pasadas++;
 
-        if (this.esSolucion()) {
-            this.solucion_parcial.clear();
+        if (this.esSolucion() && this.esPasable(estado, fila, columna)) {
+            this.solucion.clear();
             this.solucion.addAll(this.solucion_parcial);
         } else {
-            
+            if (this.esPasable(estado, fila, columna)) {
+                if (this.solucion.isEmpty() || this.solucion_parcial.size() < this.solucion.size()) { //Poda
+
+                    if (this.esPosicionValida(estado, fila, columna-1) && !solucion_parcial.contains(new Posicion(fila, columna-1)) ) {
+                        this.backtracking(estado, fila, columna-1);
+                        this.solucion_parcial.remove(this.solucion_parcial.size()-1);
+                    }
+
+                    if (this.esPosicionValida(estado, fila+1, columna) && !solucion_parcial.contains(new Posicion(fila+1, columna))) {
+                        this.backtracking(estado, fila+1, columna);
+                        this.solucion_parcial.remove(this.solucion_parcial.size()-1);
+                    }
+
+                    if (this.esPosicionValida(estado, fila, columna+1) && !solucion_parcial.contains(new Posicion(fila, columna+1))) {
+                        this.backtracking(estado, fila, columna+1);
+                        this.solucion_parcial.remove(this.solucion_parcial.size()-1);
+                    }
+
+                    if (this.esPosicionValida(estado, fila-1, columna) && !solucion_parcial.contains(new Posicion(fila-1, columna))) {
+                        this.backtracking(estado, fila-1, columna);
+                        this.solucion_parcial.remove(this.solucion_parcial.size()-1);
+                    }
+                }
+            }
         }
     }
 
     private boolean esSolucion() {
-        return this.fila_robot == this.fila_carga && this.columna_robot == this.columna_carga;
+        Posicion ultima_posicion = this.solucion_parcial.get(this.solucion_parcial.size()-1);
+        return ultima_posicion.getFila() == this.fila_carga && ultima_posicion.getColumna() == this.columna_carga;
     }
 
     private boolean sonPosicionesValidas(int [][] matriz) {
-        return this.fila_robot >= 0 && this.fila_robot < matriz.length && this.columna_robot >= 0 && this.columna_robot < matriz[0].length && this.fila_carga >= 0 && this.fila_carga < matriz.length && this.columna_carga >= 0 && this.columna_carga < matriz[0].length;
+        return this.esPosicionValida(matriz, this.fila_robot, this.columna_robot) && this.esPosicionValida(matriz, fila_carga, columna_carga);
+    }
+
+    private boolean esPosicionValida(int [][] matriz, int fila, int columna) {
+        return fila >= 0 && fila < matriz.length && columna >= 0 && columna < matriz[0].length;
+    }
+
+    private boolean esPasable(int [][] matriz, int fila, int columna) {
+        return matriz[fila][columna] == _libre;
     }
 }
