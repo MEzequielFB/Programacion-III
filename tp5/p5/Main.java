@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
         GrafoNoDirigido<Integer> grafo = new GrafoNoDirigido<>();
@@ -22,7 +24,12 @@ public class Main {
         grafo.agregarArco(4, 8, 30);
         grafo.agregarArco(5, 7, 15);
 
+        ArrayList<Integer> puertos = new ArrayList<>();
+        puertos.add(6);
+        puertos.add(7);
+        puertos.add(8);
+
         GreedyPuertos greedy = new GreedyPuertos();
-        System.out.println("Solucion: " + greedy.greedy(grafo, 6, 7, 8));
+        System.out.println("Solucion: " + greedy.greedy(grafo, puertos));
     }
 }

@@ -19,7 +19,7 @@ public class GreedyPuertos {
         this.padres = new ArrayList<>();
     }
 
-    public List<List<List<Integer>>> greedy(Grafo<Integer> grafo, int puerto1, int puerto2, int puerto3) {
+    public List<List<List<Integer>>> greedy(Grafo<Integer> grafo, List<Integer> puertos) {
         Iterator<Integer> vertices = grafo.obtenerVertices();
         while (vertices.hasNext()) {
             this.origen = vertices.next();
@@ -34,8 +34,8 @@ public class GreedyPuertos {
             int posicion_origen = grafo.obtenerPosicionVertice(this.origen);
             this.distancias.set(posicion_origen, 0);
 
-            while (solucion_parcial.isEmpty() || !this.esSolucion(solucion_parcial, puerto1, puerto2, puerto3)) {
-                int candidato = this.seleccionar(grafo, solucion_parcial);
+            while (solucion_parcial.isEmpty() || !this.esSolucion(solucion_parcial, puertos)) {
+                int candidato = this.seleccionar(grafo, solucion_parcial, puertos);
                 solucion_parcial.add(candidato);
 
                 Iterator<Integer> adyacentes = grafo.obtenerAdyacentes(candidato);
@@ -65,7 +65,7 @@ public class GreedyPuertos {
         return this.soluciones;
     }
 
-    private int seleccionar(Grafo<Integer> grafo, List<Integer> solucion_parcial) {
+    private int seleccionar(Grafo<Integer> grafo, List<Integer> solucion_parcial, List<Integer> puertos) {
         int mejor_candidato = -1;
         for (int i = 0; i < grafo.cantidadVertices(); i++) {
             if (mejor_candidato == -1 || this.distancias.get(i) < this.distancias.get(grafo.obtenerPosicionVertice(mejor_candidato))) {
@@ -79,8 +79,8 @@ public class GreedyPuertos {
         return mejor_candidato;
     }
 
-    private boolean esSolucion(List<Integer> solucion_parcial, int puerto1, int puerto2, int puerto3) {
+    private boolean esSolucion(List<Integer> solucion_parcial, List<Integer> puertos) {
         int ultimo_elemento = solucion_parcial.get(solucion_parcial.size()-1);
-        return ultimo_elemento == puerto1 || ultimo_elemento == puerto2 || ultimo_elemento == puerto3;
+        return puertos.contains(ultimo_elemento);
     }
 }
