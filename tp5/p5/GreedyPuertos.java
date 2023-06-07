@@ -21,7 +21,7 @@ public class GreedyPuertos {
 
     public List<List<List<Integer>>> greedy(Grafo<Integer> grafo, List<Integer> puertos) {
         Iterator<Integer> vertices = grafo.obtenerVertices();
-        while (vertices.hasNext()) {
+        while (vertices.hasNext() && !puertos.isEmpty()) {
             this.origen = vertices.next();
 
             ArrayList<Integer> solucion_parcial = new ArrayList<>();
@@ -34,7 +34,8 @@ public class GreedyPuertos {
             int posicion_origen = grafo.obtenerPosicionVertice(this.origen);
             this.distancias.set(posicion_origen, 0);
 
-            while (solucion_parcial.isEmpty() || !this.esSolucion(solucion_parcial, puertos)) {
+            int iteracion = 0;
+            while (iteracion < grafo.cantidadVertices()) {
                 int candidato = this.seleccionar(grafo, solucion_parcial, puertos);
                 solucion_parcial.add(candidato);
 
@@ -50,8 +51,23 @@ public class GreedyPuertos {
                         this.padres.set(posicion_adyacente, candidato);
                     }
                 }
+                
+                iteracion++;
             }
+
+            int puerto_mas_cercano = -1;
+            int posicion_puerto_mas_cercano = -1;
+            for (Integer puerto : puertos) {
+                int posicion_puerto = grafo.obtenerPosicionVertice(puerto);
+                if (puerto_mas_cercano == -1 || this.distancias.get(posicion_puerto) < this.distancias.get(posicion_puerto_mas_cercano)) {
+                    puerto_mas_cercano = puerto;
+                    posicion_puerto_mas_cercano = posicion_puerto;
+                }
+            }
+            List<Integer> camino = this.armarCamino(grafo, puerto_mas_cercano, posicion_puerto_mas_cercano);
+
             List<List<Integer>> solucion_actual = new ArrayList<>();
+            solucion_actual.add(camino);
             solucion_actual.add(new ArrayList<>(this.distancias));
             solucion_actual.add(new ArrayList<>(this.padres));
 
@@ -65,8 +81,20 @@ public class GreedyPuertos {
         return this.soluciones;
     }
 
+    private List<Integer> armarCamino(Grafo<Integer> grafo, int vertice, int posicion_vertice) {
+        int posicion_actual = posicion_vertice;
+        ArrayList<Integer> camino = new ArrayList<>();
+        camino.add(0, vertice);
+        while (!camino.contains(this.origen)) {
+            camino.add(0, this.padres.get(posicion_actual));
+            posicion_actual = grafo.obtenerPosicionVertice(this.padres.get(posicion_actual));
+        }
+        return camino;
+    }
+
     private int seleccionar(Grafo<Integer> grafo, List<Integer> solucion_parcial, List<Integer> puertos) {
         int mejor_candidato = -1;
+
         for (int i = 0; i < grafo.cantidadVertices(); i++) {
             if (mejor_candidato == -1 || this.distancias.get(i) < this.distancias.get(grafo.obtenerPosicionVertice(mejor_candidato))) {
 
@@ -77,10 +105,5 @@ public class GreedyPuertos {
             }
         }
         return mejor_candidato;
-    }
-
-    private boolean esSolucion(List<Integer> solucion_parcial, List<Integer> puertos) {
-        int ultimo_elemento = solucion_parcial.get(solucion_parcial.size()-1);
-        return puertos.contains(ultimo_elemento);
     }
 }
