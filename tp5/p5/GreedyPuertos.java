@@ -19,7 +19,11 @@ public class GreedyPuertos {
         this.padres = new ArrayList<>();
     }
 
+    //Algoritmo de Dijkstra
     public List<List<List<Integer>>> greedy(Grafo<Integer> grafo, List<Integer> puertos) {
+
+        //Realiza el algoritmo de Dijktra tomando como origen a cada vertice del grafo
+        //Mientras el grafo tenga un siguiente vertice y la lista de puertos no sea vacia...
         Iterator<Integer> vertices = grafo.obtenerVertices();
         while (vertices.hasNext() && !puertos.isEmpty()) {
             this.origen = vertices.next();
@@ -55,6 +59,10 @@ public class GreedyPuertos {
                 iteracion++;
             }
 
+            //Obtiene el puerto mas cercano
+            /* int puerto_mas_cercano = this.obtenerPuertoMasCercano(grafo, puertos);
+            int posicion_puerto_mas_cercano = grafo.obtenerPosicionVertice(puerto_mas_cercano); */
+            
             int puerto_mas_cercano = -1;
             int posicion_puerto_mas_cercano = -1;
             for (Integer puerto : puertos) {
@@ -64,7 +72,10 @@ public class GreedyPuertos {
                     posicion_puerto_mas_cercano = posicion_puerto;
                 }
             }
-            List<Integer> camino = this.armarCamino(grafo, puerto_mas_cercano, posicion_puerto_mas_cercano);
+
+            List<Integer> camino = new ArrayList<>();
+            this.obtenerCamino(grafo, camino, puerto_mas_cercano, posicion_puerto_mas_cercano);
+            /* List<Integer> camino = this.obtenerCamino(grafo, puerto_mas_cercano, posicion_puerto_mas_cercano); */
 
             List<List<Integer>> solucion_actual = new ArrayList<>();
             solucion_actual.add(camino);
@@ -81,7 +92,7 @@ public class GreedyPuertos {
         return this.soluciones;
     }
 
-    private List<Integer> armarCamino(Grafo<Integer> grafo, int vertice, int posicion_vertice) {
+    /* private List<Integer> obtenerCamino(Grafo<Integer> grafo, int vertice, int posicion_vertice) {
         int posicion_actual = posicion_vertice;
         ArrayList<Integer> camino = new ArrayList<>();
         camino.add(0, vertice);
@@ -90,8 +101,36 @@ public class GreedyPuertos {
             posicion_actual = grafo.obtenerPosicionVertice(this.padres.get(posicion_actual));
         }
         return camino;
+    } */
+
+    /* private int obtenerPuertoMasCercano(Grafo<Integer> grafo, List<Integer> puertos) {
+        int puerto_mas_cercano = -1;
+        int posicion_puerto_mas_cercano = -1;
+        for (Integer puerto : puertos) {
+            int posicion_puerto = grafo.obtenerPosicionVertice(puerto);
+            if (puerto_mas_cercano == -1 || this.distancias.get(posicion_puerto) < this.distancias.get(posicion_puerto_mas_cercano)) {
+                puerto_mas_cercano = puerto;
+                posicion_puerto_mas_cercano = posicion_puerto;
+            }
+        }
+        return puerto_mas_cercano;
+    } */
+
+    //Obtiene un camino a partir de:
+    //Un vertice
+    //Su posicion
+    //Y su padre y la posicion de su padre
+    private void obtenerCamino(Grafo<Integer> grafo, List<Integer> camino, int vertice, int posicion_vertice) {
+        camino.add(0, vertice);
+        if (!camino.contains(this.origen)) {
+            int padre_vertice = this.padres.get(posicion_vertice);
+            int posicion_padre_vertice = grafo.obtenerPosicionVertice(padre_vertice);
+
+            this.obtenerCamino(grafo, camino, padre_vertice, posicion_padre_vertice);
+        }
     }
 
+    //El mejor candidato es aquel con menor distancia y que no sea parte de la solucion parcial
     private int seleccionar(Grafo<Integer> grafo, List<Integer> solucion_parcial, List<Integer> puertos) {
         int mejor_candidato = -1;
 

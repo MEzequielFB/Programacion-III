@@ -17,11 +17,11 @@ public class Main {
         grafo.agregarArco(1, 5, 30);
         grafo.agregarArco(1, 6, 20);
         grafo.agregarArco(2, 3, 10);
-        grafo.agregarArco(2, 4, 20);
-        grafo.agregarArco(2, 5, 25);
+        grafo.agregarArco(2, 4, 5);
+        grafo.agregarArco(2, 5, 5);
         grafo.agregarArco(3, 8, 100);
         grafo.agregarArco(4, 5, 15);
-        grafo.agregarArco(4, 8, 30);
+        grafo.agregarArco(4, 8, 12);
         grafo.agregarArco(5, 7, 15);
 
         ArrayList<Integer> puertos = new ArrayList<>();
