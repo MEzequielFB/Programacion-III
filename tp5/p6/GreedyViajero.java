@@ -18,6 +18,10 @@ public class GreedyViajero {
     }
 
     public List<Integer> greedy(Grafo<Integer> grafo, int origen) {
+        this.solucion.clear();
+        this.distancias.clear();
+        this.padres.clear();
+        
         if (grafo.contieneVertice(origen)) {
             for (int i = 0; i < grafo.cantidadVertices(); i++) {
                 this.distancias.add(_infinito);
