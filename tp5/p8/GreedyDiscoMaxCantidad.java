@@ -6,6 +6,7 @@ public class GreedyDiscoMaxCantidad extends GreedyDisco {
         super(m, cantidad_limite_generos_repetidos);
     }
 
+    //Selecciona a los candidatos de menor tamanio
     @Override
     protected ArchivoCancion seleccionar(List<ArchivoCancion> canciones, List<ArchivoCancion> canciones_seleccionadas) {
         ArchivoCancion mejor_candidato = null;
