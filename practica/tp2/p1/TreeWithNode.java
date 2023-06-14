@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class TreeWithNode {
     private TreeNode root;
         
@@ -5,6 +8,124 @@ public class TreeWithNode {
         this.root = null;
     }
 
+    //O(N)
+    public List<Integer> getElemAtLevel(int level) {
+        ArrayList<Integer> elements = new ArrayList<>();
+
+        this.addToElemAtLevel(this.root, elements, level, 0);
+        return elements;
+    }
+
+    private void addToElemAtLevel(TreeNode nodo_actual, List<Integer> elements, int level, int actual_level) {
+        if (nodo_actual != null) {
+            if (actual_level == level) {
+                elements.add(nodo_actual.getValue());
+            } else {
+                this.addToElemAtLevel(nodo_actual.getLeft(), elements, level, actual_level+1);
+                this.addToElemAtLevel(nodo_actual.getRight(), elements, level, actual_level+1);
+            }
+        }
+    }
+
+    //O(N) Si es un arbol enredadera
+    public Integer getMaxElem() {
+        return this.getMaxElem(this.root);
+    }
+
+    private Integer getMaxElem(TreeNode nodo_actual) {
+        if (nodo_actual != null) {
+            TreeNode nodo_derecha = nodo_actual.getRight();
+
+            if (nodo_derecha != null) {
+                return this.getMaxElem(nodo_derecha);
+            } else {
+                return nodo_actual.getValue();
+            }
+        }
+        return null;
+    }
+
+    //O(N)
+    public List<Integer> getFrontera() {
+        ArrayList<Integer> frontera = new ArrayList<>();
+
+        this.addToFrontera(this.root, frontera);
+        return frontera;
+    }
+
+    private void addToFrontera(TreeNode nodo_actual, List<Integer> frontera) {
+        if (nodo_actual != null) {
+            TreeNode nodo_izquierda = nodo_actual.getLeft();
+            TreeNode nodo_derecha = nodo_actual.getRight();
+
+            if (nodo_izquierda == null && nodo_derecha == null) {
+                frontera.add(nodo_actual.getValue());
+            } else {
+                addToFrontera(nodo_izquierda, frontera);
+                addToFrontera(nodo_derecha, frontera);
+            }
+        }
+    }
+
+    //O(N)
+    public List<Integer> getLongestBranch() {
+        ArrayList<Integer> longest_branch = new ArrayList<>();
+
+        this.addToLongestBranch(this.root, longest_branch);
+        return longest_branch;
+    }
+
+    private void addToLongestBranch(TreeNode nodo_actual, List<Integer> longest_branch) {
+        if (nodo_actual != null) {
+            longest_branch.add(nodo_actual.getValue());
+
+            int height_left = this.getHeight(this.root.getLeft());
+            int height_right = this.getHeight(this.root.getRight());
+
+            if (height_left > height_right) {
+                this.addToLongestBranch(nodo_actual.getLeft(), longest_branch);
+            } else {
+                this.addToLongestBranch(nodo_actual.getRight(), longest_branch);
+            }
+        }
+    }
+
+    //O(N)
+    public int getHeight2() {
+        int height_left = this.getHeight2(this.root.getLeft(), 0);
+        int height_right = this.getHeight2(this.root.getRight(), 0);
+        return Math.max(height_left, height_right);
+    }
+
+    private int getHeight2(TreeNode nodo_actual, int level) {
+        if (nodo_actual != null) {
+            int height_left = this.getHeight2(nodo_actual.getLeft(), level+1);
+            int height_right = this.getHeight2(nodo_actual.getRight(), level+1);
+            return Math.max(height_left, height_right);
+        }
+        return level;
+    }
+
+    //O(N)
+    public int getHeight() {
+        int height_left = this.getHeight(this.root.getLeft());
+        int height_right = this.getHeight(this.root.getRight());
+        return Math.max(height_left, height_right);
+    }
+
+    private int getHeight(TreeNode nodo_actual) {
+        if (nodo_actual != null) {
+            int sum = 0;
+            int height_left = this.getHeight(nodo_actual.getLeft());
+            int height_right = this.getHeight(nodo_actual.getRight());
+
+            sum = Math.max(height_left, height_right) + 1;
+            return sum;
+        }
+        return 0;
+    }
+
+    //O(N)
     public void printOrder() {
         this.printOrder(this.root);
     }
@@ -17,6 +138,7 @@ public class TreeWithNode {
         }
     }
 
+    //O(N)
     public void printPreOrder() {
         this.printPreOrder(this.root);
     }
@@ -29,6 +151,7 @@ public class TreeWithNode {
         }
     }
 
+    //O(N)
     public void printPosOrder() {
         this.printPosOrder(this.root);
     }
@@ -41,6 +164,7 @@ public class TreeWithNode {
         }
     }
 
+    //O(Log2 N)
     public boolean delete(Integer valor) {
         return this.delete(root, null, valor);
     }
@@ -103,6 +227,8 @@ public class TreeWithNode {
         TreeNode nmd = this.getNMD(nodo_actual.getLeft(), nodo_actual);
 
         if (nmd != null) {
+            this.delete(nmd.getValue());
+
             if (nodo_padre == null) {
                 this.root = nmd;
             } else {
@@ -123,7 +249,7 @@ public class TreeWithNode {
             if (nodo_derecha != null) {
                 return this.getNMD(nodo_derecha, nodo_actual);
             } else {
-                nodo_padre.setRight(null);
+                /* nodo_padre.setRight(null); */
                 return nodo_actual;
             }
         }
@@ -176,6 +302,7 @@ public class TreeWithNode {
         return false;
     }
 
+    //O(1)
     public Integer getRoot() {
         return this.root.getValue();
     }
