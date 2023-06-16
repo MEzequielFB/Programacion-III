@@ -5,22 +5,14 @@ public class Main {
         grafo1.agregarVertice(2);
         grafo1.agregarVertice(3);
         grafo1.agregarVertice(4);
-        grafo1.agregarVertice(5);
-        grafo1.agregarVertice(6);
-        grafo1.agregarVertice(7);
 
-        grafo1.agregarArco(1, 4, "se conecta con");
+        grafo1.agregarArco(1, 2, "se conecta con");
+        /* grafo1.agregarArco(1, 3, "se conecta con"); */
+        grafo1.agregarArco(2, 4, "se conecta con");
+        grafo1.agregarArco(3, 1, "se conecta con");
         grafo1.agregarArco(3, 4, "se conecta con");
-        grafo1.agregarArco(1, 3, "se conecta con");
-        grafo1.agregarArco(1, 7, "se conecta con");
-        grafo1.agregarArco(6, 5, "se conecta con");
-        grafo1.agregarArco(6, 1, "se conecta con");
-        grafo1.agregarArco(3, 6, "se conecta con");
 
-        ServicioDfs dfs = new ServicioDfs();
-        System.out.println("Dfs: " + dfs.dfs(grafo1));
-
-        ServicioBfs bfs = new ServicioBfs();
-        System.out.println("Bfs: " + bfs.bfs(grafo1));
+        ServicioCiclo servicio = new ServicioCiclo();
+        System.out.println("Tiene ciclo: " + servicio.tieneCiclo(grafo1));
     }
 }
