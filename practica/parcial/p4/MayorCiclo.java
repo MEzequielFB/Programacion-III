@@ -21,16 +21,26 @@ public class MayorCiclo {
 
         Iterator<Integer> vertices = grafo.obtenerVertices();
         while (vertices.hasNext()) {
-            int vertice = vertices.next();
+            Integer vertice = vertices.next();
             if (!solucion_parcial.contains(vertice)) {
                 this.dfsVisit(grafo, vertice);
                 this.solucion_parcial.remove(this.solucion_parcial.size()-1);
+                this.vertices_terminados.remove(vertice);
             }
         }
         return this.solucion;
     }
 
     private void dfsVisit(Grafo<?> grafo, int vertice) {
+        if (solucion_parcial.contains(vertice) && !this.vertices_terminados.contains(vertice)) {
+            List<Integer> ciclo = this.obtenerCiclo(vertice);
+
+            if (this.solucion.size() < ciclo.size()) {
+                this.solucion.clear();
+                this.solucion.addAll(ciclo);
+            }
+        }
+
         this.solucion_parcial.add(vertice);
 
         Iterator<Integer> adyacentes = grafo.obtenerAdyacentes(vertice);
@@ -39,7 +49,7 @@ public class MayorCiclo {
             Arco<?> arco = new Arco<>(vertice, adyacente, null);
             Arco<?> arco_invertido = new Arco<>(adyacente, vertice, null);
 
-            if (!this.solucion_parcial.contains(adyacente)) {
+            if (!this.arcos_pasados.contains(arco) && !this.arcos_pasados.contains(arco_invertido)) {
                 this.arcos_pasados.add(arco);
                 this.dfsVisit(grafo, adyacente);
 
@@ -47,15 +57,25 @@ public class MayorCiclo {
                 this.arcos_pasados.remove(this.arcos_pasados.size()-1);
                 this.vertices_terminados.remove(adyacente);
 
-            } else if (!this.vertices_terminados.contains(adyacente) && !this.arcos_pasados.contains(arco) && !this.arcos_pasados.contains(arco_invertido)) {
-                if (this.solucion.size() < this.solucion_parcial.size()) {
-                    this.solucion.clear();
-                    this.solucion.addAll(this.solucion_parcial);
-                    this.solucion.add(adyacente);
-                }
             }
         }
 
         this.vertices_terminados.add(vertice);
+    }
+
+    private List<Integer> obtenerCiclo(int ultimo_vertice) {
+        List<Integer> ciclo = new ArrayList<>();
+        int posicion = 0;
+
+        for (Integer vertice : this.solucion_parcial) {
+            if (vertice == ultimo_vertice) {
+                ciclo.addAll(this.solucion_parcial.subList(posicion, this.solucion_parcial.size()));
+                ciclo.add(ultimo_vertice);
+                return ciclo;
+            }
+
+            posicion++;
+        }
+        return null;
     }
 }
